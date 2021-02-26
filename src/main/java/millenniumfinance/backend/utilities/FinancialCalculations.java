@@ -71,11 +71,11 @@ public final class FinancialCalculations {
         return movingAverageConvergenceDivergence;
     }
 
-    public static List<Double> calculateAllRollingMean(List<Double> numbers, int rollingWindowSize){
+    public static List<Double> calculateAllRollingMean(List<Double> numbers, int rollingWindowSize) {
         List<Double> rollingMean = new ArrayList<>();
         int startingIndex = rollingWindowSize;
-        for(int i = 1; i <= numbers.size(); i++){
-            if(i >= startingIndex) {
+        for (int i = 1; i <= numbers.size(); i++) {
+            if (i >= startingIndex) {
                 rollingMean.add(calculateMeanInWindow(numbers, i - rollingWindowSize, i));
             } else {
                 rollingMean.add(0D);
@@ -84,16 +84,16 @@ public final class FinancialCalculations {
         return rollingMean;
     }
 
-    public static Double calculateMeanInWindow(List<Double> numbers, int startIndex, int endIndex){
+    public static Double calculateMeanInWindow(List<Double> numbers, int startIndex, int endIndex) {
         int length = endIndex - startIndex;
         return summation(numbers.subList(startIndex, endIndex)) / length;
     }
 
-    public static List<Double> calculateAllRollingStandardDeviation(List<Double> numbers, int rollingWindowSize){
+    public static List<Double> calculateAllRollingStandardDeviation(List<Double> numbers, int rollingWindowSize) {
         List<Double> rollingStandardDeviation = new ArrayList<>();
         int startingIndex = rollingWindowSize;
-        for(int i = 1; i <= numbers.size(); i++){
-            if(i >= startingIndex) {
+        for (int i = 1; i <= numbers.size(); i++) {
+            if (i >= startingIndex) {
                 rollingStandardDeviation.add(calculateStandardDeviationInWindow(numbers, i - rollingWindowSize, i));
             } else {
                 rollingStandardDeviation.add(0D);
@@ -102,7 +102,7 @@ public final class FinancialCalculations {
         return rollingStandardDeviation;
     }
 
-    public static Double calculateStandardDeviationInWindow(List<Double> numbers, int startIndex, int endIndex){
+    public static Double calculateStandardDeviationInWindow(List<Double> numbers, int startIndex, int endIndex) {
         return standardDeviation(numbers.subList(startIndex, endIndex));
     }
 
@@ -110,9 +110,9 @@ public final class FinancialCalculations {
             List<Double> movingAverages,
             List<Double> standardDeviations,
             Double deviations
-    ){
+    ) {
         List<Double> upperBollingerBands = new ArrayList<>();
-        for(int i = 0; i < movingAverages.size(); i++){
+        for (int i = 0; i < movingAverages.size(); i++) {
             upperBollingerBands.add(calculateUpperBollingerBand(
                     movingAverages.get(i),
                     standardDeviations.get(i),
@@ -122,7 +122,7 @@ public final class FinancialCalculations {
         return upperBollingerBands;
     }
 
-    public static Double calculateUpperBollingerBand(Double movingAverage, Double standardDeviation, Double deviations){
+    public static Double calculateUpperBollingerBand(Double movingAverage, Double standardDeviation, Double deviations) {
         return movingAverage + (standardDeviation * deviations);
     }
 
@@ -130,9 +130,9 @@ public final class FinancialCalculations {
             List<Double> movingAverages,
             List<Double> standardDeviations,
             Double deviations
-    ){
+    ) {
         List<Double> lowerBollingerBands = new ArrayList<>();
-        for(int i = 0; i < movingAverages.size(); i++){
+        for (int i = 0; i < movingAverages.size(); i++) {
             lowerBollingerBands.add(calculateLowerBollingerBand(
                     movingAverages.get(i),
                     standardDeviations.get(i),
@@ -142,15 +142,15 @@ public final class FinancialCalculations {
         return lowerBollingerBands;
     }
 
-    public static Double calculateLowerBollingerBand(Double movingAverage, Double standardDeviation, Double deviations){
+    public static Double calculateLowerBollingerBand(Double movingAverage, Double standardDeviation, Double deviations) {
         return movingAverage - (standardDeviation * deviations);
     }
 
-    public static List<Double> calculateAllRelativeStrengthIndex(List<Double> closePrices, int windowSize){
+    public static List<Double> calculateAllRelativeStrengthIndex(List<Double> closePrices, int windowSize) {
         List<Double> relativeStrengthIndex = new ArrayList<>();
         List<Double> differenceInPrice = new ArrayList<>();
-        for (int i = 0; i < closePrices.size(); i++){
-            if(i == 0 || i == closePrices.size() - 1){
+        for (int i = 0; i < closePrices.size(); i++) {
+            if (i == 0 || i == closePrices.size() - 1) {
                 differenceInPrice.add(0D);
             } else {
                 differenceInPrice.add(calculateGainOrLoss(closePrices.get(i), closePrices.get(i + 1)));
@@ -159,7 +159,7 @@ public final class FinancialCalculations {
         List<Double> positiveDifferences = differenceInPrice
                 .stream()
                 .map(difference -> {
-                    if(difference > 0){
+                    if (difference > 0) {
                         return difference;
                     } else {
                         return 0D;
@@ -169,7 +169,7 @@ public final class FinancialCalculations {
         List<Double> negativeDifferences = differenceInPrice
                 .stream()
                 .map(difference -> {
-                    if(difference < 0) {
+                    if (difference < 0) {
                         return difference;
                     } else {
                         return 0D;
@@ -178,8 +178,8 @@ public final class FinancialCalculations {
                 .collect(Collectors.toList());
 
         List<Double> positiveDifferencesAverage = new ArrayList<>();
-        for(int i = 1; i <= positiveDifferences.size(); i++){
-            if(i < windowSize) {
+        for (int i = 1; i <= positiveDifferences.size(); i++) {
+            if (i < windowSize) {
                 positiveDifferencesAverage.add(0D);
             } else {
                 int startIndex = i - windowSize;
@@ -190,8 +190,8 @@ public final class FinancialCalculations {
         }
 
         List<Double> negativeDifferenceAverages = new ArrayList<>();
-        for(int i = 1; i <= negativeDifferences.size(); i++){
-            if(i < windowSize) {
+        for (int i = 1; i <= negativeDifferences.size(); i++) {
+            if (i < windowSize) {
                 negativeDifferenceAverages.add(0D);
             } else {
                 int startIndex = i - windowSize;
@@ -201,20 +201,20 @@ public final class FinancialCalculations {
             }
         }
 
-        for(int i = 0; i < closePrices.size(); i++){
-            if(i < windowSize - 1) {
+        for (int i = 0; i < closePrices.size(); i++) {
+            if (i < windowSize - 1) {
                 relativeStrengthIndex.add(0D);
-            } else if(i == windowSize - 1) {
-                relativeStrengthIndex.add(100 - (100 / (1 + ((positiveDifferencesAverage.get(i)/windowSize)/(negativeDifferenceAverages.get(i)/windowSize)))));
+            } else if (i == windowSize - 1) {
+                relativeStrengthIndex.add(100 - (100 / (1 + ((positiveDifferencesAverage.get(i) / windowSize) / (negativeDifferenceAverages.get(i) / windowSize)))));
             } else {
-                relativeStrengthIndex.add(100 - (100 / (1 + (((positiveDifferencesAverage.get(i - 1) * (windowSize - 1)) + positiveDifferencesAverage.get(i))/-((negativeDifferenceAverages.get(i - 1) * (windowSize - 1)) + negativeDifferenceAverages.get(i))))));
+                relativeStrengthIndex.add(100 - (100 / (1 + (((positiveDifferencesAverage.get(i - 1) * (windowSize - 1)) + positiveDifferencesAverage.get(i)) / -((negativeDifferenceAverages.get(i - 1) * (windowSize - 1)) + negativeDifferenceAverages.get(i))))));
             }
         }
 
         return relativeStrengthIndex;
     }
 
-    public static Double calculateGainOrLoss(Double purchasePrice, Double soldPrice){
+    public static Double calculateGainOrLoss(Double purchasePrice, Double soldPrice) {
         return (soldPrice - purchasePrice) / purchasePrice;
     }
 }

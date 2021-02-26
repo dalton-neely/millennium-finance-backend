@@ -1,73 +1,77 @@
 package millenniumfinance.backend.data.v1.structures;
 
 public class Position {
-    private String state;
-    private String trade;
-    private String action;
+    private MarketInvolvementState state;
+    private PositionTradeState trade;
+    private PositionTradeStrategy action;
 
-    public Position(String initialState) {
-        this.state = initialState;
-        this.trade = "READY";
-        this.action = initialState;
+    public Position() {
+        this.state = MarketInvolvementState.OUT;
+        this.trade = PositionTradeState.READY;
+        this.action = PositionTradeStrategy.GET_IN;
     }
 
-    public String getState() {
-        return state;
+    public boolean isReady() {
+        return this.trade == PositionTradeState.READY;
     }
 
-    public Position setState(String state) {
-        this.state = state;
-        return this;
+    public boolean isFailed() {
+        return this.trade == PositionTradeState.FAILED;
     }
 
-    public String getTrade() {
-        return trade;
+    public boolean isInShortHold() {
+        return this.state == MarketInvolvementState.IN && this.action == PositionTradeStrategy.SHORT_TRADE;
     }
 
-    public Position setTrade(String trade) {
-        this.trade = trade;
-        return this;
+    public boolean isInLongHold() {
+        return this.state == MarketInvolvementState.IN && this.action == PositionTradeStrategy.LONG_TRADE;
     }
 
-    public String getAction() {
-        return action;
+    public boolean isOutOfMarket() {
+        return this.state == MarketInvolvementState.OUT;
     }
 
-    public Position setAction(String action) {
-        this.action = action;
-        return this;
+    public boolean isInMarket() {
+        return this.state == MarketInvolvementState.IN;
     }
 
-    public void marketBuy(){
-        this.state = "IN";
-        this.action = "LONG TRADE";
+    public boolean isOutOfMarketButDelaying() {
+        return this.action == PositionTradeStrategy.DELAY_BUY;
     }
 
-    public void marketShort(){
-        this.state = "IN";
-        this.action = "SHORT TRADE";
+    public void marketBuyForLong() {
+        this.state = MarketInvolvementState.IN;
+        this.action = PositionTradeStrategy.LONG_TRADE;
     }
 
-    public void marketSell(){
-        this.state = "OUT";
+    public void marketBuyForShort() {
+        this.state = MarketInvolvementState.IN;
+        this.action = PositionTradeStrategy.SHORT_TRADE;
+        this.trade = PositionTradeState.READY;
     }
 
-    public void win(){
-        this.state = "OUT";
-        this.trade = "READY";
-        this.action = "LONG TRADE";
+    public void sellPositionsAtMarket() {
+        this.state = MarketInvolvementState.OUT;
     }
 
-    public void loss(){
-        this.state = "OUT";
-        this.trade = "FAILED";
+    public void win() {
+        this.state = MarketInvolvementState.OUT;
+        this.trade = PositionTradeState.READY;
+        this.action = PositionTradeStrategy.LONG_TRADE;
     }
 
-    public void ready(){
-        this.trade = "READY";
+    public void loss() {
+        this.state = MarketInvolvementState.OUT;
+        this.trade = PositionTradeState.FAILED;
     }
 
-    public void delay(){
-        this.action = "DELAY BUY";
+    public void delayTheBuy() {
+        this.action = PositionTradeStrategy.DELAY_BUY;
     }
+
+    public enum MarketInvolvementState {IN, OUT}
+
+    public enum PositionTradeState {READY, FAILED}
+
+    public enum PositionTradeStrategy {DELAY_BUY, LONG_TRADE, SHORT_TRADE, GET_IN}
 }

@@ -1,62 +1,150 @@
 package millenniumfinance.backend.data.v1.structures;
 
+import java.util.List;
+import java.util.UUID;
+
 public class GainLossReport {
-    private Integer wins;
-    private Integer losses;
-    private Double usdtBalance;
-    private Double btcBalance;
-    private Double lastPrice;
+    private Integer amountOfWins;
+    private Integer amountOfLosses;
+    private Double unitedStatesDollarTetherBalance;
+    private Double cryptocurrencyBalance;
+    private Double lastSecurityPrice;
+    private List<TransactionRecord> transactionRecords;
+    private UUID simulationId;
 
-    public GainLossReport(){}
-
-    public Integer getWins() {
-        return wins;
+    public GainLossReport() {
     }
 
-    public void setWins(Integer wins) {
-        this.wins = wins;
+    public GainLossReport(
+            Integer amountOfWins,
+            Integer amountOfLosses,
+            Double unitedStatesDollarTetherBalance,
+            Double cryptocurrencyBalance,
+            Double lastSecurityPrice,
+            List<TransactionRecord> transactionRecords,
+            UUID simulationId
+    ) {
+        this.amountOfWins = amountOfWins;
+        this.amountOfLosses = amountOfLosses;
+        this.unitedStatesDollarTetherBalance = unitedStatesDollarTetherBalance;
+        this.cryptocurrencyBalance = cryptocurrencyBalance;
+        this.lastSecurityPrice = lastSecurityPrice;
+        this.transactionRecords = transactionRecords;
+        this.simulationId = simulationId;
     }
 
-    public Integer getLosses() {
-        return losses;
+    public Integer getAmountOfWins() {
+        return amountOfWins;
     }
 
-    public void setLosses(Integer losses) {
-        this.losses = losses;
+    public void setAmountOfWins(Integer amountOfWins) {
+        this.amountOfWins = amountOfWins;
     }
 
-    public Double getUsdtBalance() {
-        return usdtBalance;
+    public Integer getAmountOfLosses() {
+        return amountOfLosses;
     }
 
-    public void setUsdtBalance(Double usdtBalance) {
-        this.usdtBalance = usdtBalance;
+    public void setAmountOfLosses(Integer amountOfLosses) {
+        this.amountOfLosses = amountOfLosses;
     }
 
-    public Double getBtcBalance() {
-        return btcBalance;
+    public Double getUnitedStatesDollarTetherBalance() {
+        return unitedStatesDollarTetherBalance;
     }
 
-    public void setBtcBalance(Double btcBalance) {
-        this.btcBalance = btcBalance;
+    public void setUnitedStatesDollarTetherBalance(Double unitedStatesDollarTetherBalance) {
+        this.unitedStatesDollarTetherBalance = unitedStatesDollarTetherBalance;
     }
 
-    public Double getLastPrice() {
-        return lastPrice;
+    public Double getCryptocurrencyBalance() {
+        return cryptocurrencyBalance;
     }
 
-    public void setLastPrice(Double lastPrice) {
-        this.lastPrice = lastPrice;
+    public void setCryptocurrencyBalance(Double cryptocurrencyBalance) {
+        this.cryptocurrencyBalance = cryptocurrencyBalance;
     }
 
-    @Override
-    public String toString() {
-        return "GainLossReport{" +
-                "wins=" + wins +
-                ", losses=" + losses +
-                ", usdtBalance=" + usdtBalance +
-                ", btcBalance=" + btcBalance +
-                ", lastPrice=" + lastPrice +
-                '}';
+    public Double getLastSecurityPrice() {
+        return lastSecurityPrice;
+    }
+
+    public void setLastSecurityPrice(Double lastSecurityPrice) {
+        this.lastSecurityPrice = lastSecurityPrice;
+    }
+
+    public List<TransactionRecord> getTransactionRecords() {
+        return transactionRecords;
+    }
+
+    public GainLossReport setTransactionRecords(List<TransactionRecord> transactionRecords) {
+        this.transactionRecords = transactionRecords;
+        return this;
+    }
+
+    public UUID getSimulationId() {
+        return simulationId;
+    }
+
+    public GainLossReport setSimulationId(UUID simulationId) {
+        this.simulationId = simulationId;
+        return this;
+    }
+
+    public static class GainLossReportBuilder {
+        private Integer amountOfWins;
+        private Integer amountOfLosses;
+        private Double unitedStatesDollarTetherBalance;
+        private Double cryptocurrencyBalance;
+        private Double lastSecurityPrice;
+        private List<TransactionRecord> transactionRecords;
+        private UUID simulationId;
+
+        public GainLossReportBuilder setAmountOfWins(Integer amountOfWins) {
+            this.amountOfWins = amountOfWins;
+            return this;
+        }
+
+        public GainLossReportBuilder setAmountOfLosses(Integer amountOfLosses) {
+            this.amountOfLosses = amountOfLosses;
+            return this;
+        }
+
+        public GainLossReportBuilder setUnitedStatesDollarTetherBalance(Double unitedStatesDollarTetherBalance) {
+            this.unitedStatesDollarTetherBalance = unitedStatesDollarTetherBalance;
+            return this;
+        }
+
+        public GainLossReportBuilder setCryptocurrencyBalance(Double cryptocurrencyBalance) {
+            this.cryptocurrencyBalance = cryptocurrencyBalance;
+            return this;
+        }
+
+        public GainLossReportBuilder setLastSecurityPrice(Double lastSecurityPrice) {
+            this.lastSecurityPrice = lastSecurityPrice;
+            return this;
+        }
+
+        public GainLossReportBuilder setTransactionRecords(List<TransactionRecord> transactionRecords) {
+            this.transactionRecords = transactionRecords;
+            return this;
+        }
+
+        public GainLossReportBuilder setSimulationId(UUID simulationId) {
+            this.simulationId = simulationId;
+            return this;
+        }
+
+        public GainLossReport build() {
+            return new GainLossReport(
+                    this.amountOfWins,
+                    this.amountOfLosses,
+                    this.unitedStatesDollarTetherBalance,
+                    this.cryptocurrencyBalance,
+                    this.lastSecurityPrice,
+                    this.transactionRecords,
+                    this.simulationId
+            );
+        }
     }
 }

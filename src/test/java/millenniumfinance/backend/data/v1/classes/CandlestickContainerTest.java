@@ -5,15 +5,14 @@ import org.junit.jupiter.api.Test;
 
 import java.util.Date;
 
-import static millenniumfinance.backend.data.v1.classes.CandlestickContainer.fromBinanceApiString;
+import static millenniumfinance.backend.data.v1.structures.Candlestick.fromBinanceApiString;
 import static org.junit.jupiter.api.Assertions.*;
 
 class CandlestickContainerTest {
     @Test
     public void fromBinanceApiStringTest() {
         final String input = "[1613908680000,\"57298.1800\",\"57315.5900\",\"57271.4900\",\"57297.5800\",\"0.04704000\",1613908739999,\"2694.9437\",9,\"0.01788600\",\"1024.5837\",\"0\"]";
-        final CandlestickContainer candlestickContainer = fromBinanceApiString(input);
-        final Candlestick candlestick = candlestickContainer.getCandlestick();
+        final Candlestick candlestick = fromBinanceApiString(input);
 
         assertEquals(candlestick.getOpenTime(), new Date(1613908680000L));
         assertEquals(candlestick.getOpenPrice(), 57298.1800D);

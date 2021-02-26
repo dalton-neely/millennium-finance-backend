@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 import java.util.ArrayList;
 import java.util.List;
 
-import static millenniumfinance.backend.data.v1.classes.DataTableContainer.TWELVE_PERIODS;
+import static millenniumfinance.backend.data.v1.structures.DataTable.TWELVE_PERIODS;
 import static millenniumfinance.backend.utilities.FinancialCalculations.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 

@@ -8,7 +8,6 @@ public final class Constants {
     public static final String SYMBOL_TETHER = "USDTUSD";
     public static final String SYMBOL_IOTA = "IOTAUSD";
 
-
     public static final String INTERVAL_ONE_MINUTE = "1m";
     public static final String INTERVAL_THREE_MINUTES = "3m";
     public static final String INTERVAL_FIVE_MINUTES = "5m";

@@ -16,7 +16,7 @@ public final class MathCalculations {
         return squaredDifferences;
     }
 
-    public static Double standardDeviation(List<Double> numbers){
+    public static Double standardDeviation(List<Double> numbers) {
         Double sumOfNumbers = summation(numbers);
         int numberOfElements = numbers.size();
         Double meanOfNumbers = sumOfNumbers / numberOfElements;

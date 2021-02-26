@@ -7,7 +7,7 @@ public class WhenToBuyAfterALossParameters {
     private Double priceCeilingMultiplier;
     private Double rsiCeiling;
 
-    public WhenToBuyAfterALossParameters(){
+    public WhenToBuyAfterALossParameters() {
         this.priceCeilingMultiplier = DEFAULT_PRICE_CEILING_MULTIPLIER;
         this.rsiCeiling = DEFAULT_RSI_CEILING;
     }

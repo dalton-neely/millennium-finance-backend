@@ -5,7 +5,7 @@ public class WhenToSellForALoss {
 
     private Double floorGainLossPercentage;
 
-    public WhenToSellForALoss(){
+    public WhenToSellForALoss() {
         this.floorGainLossPercentage = DEFAULT_FLOOR_GAIN_LOSS_PERCENTAGE;
     }
 
