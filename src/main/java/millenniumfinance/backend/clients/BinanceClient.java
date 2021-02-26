@@ -1,5 +1,6 @@
 package millenniumfinance.backend.clients;
 
+import millenniumfinance.backend.data.v1.structures.CalculateDataInput;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -18,15 +19,15 @@ public final class BinanceClient {
         this.restTemplate = restTemplate;
     }
 
-    public String getCandlestickData(String symbol, String interval, String limit) {
+    public String getCandlestickData(CalculateDataInput input) {
         return restTemplate
                 .getForEntity(
                         BINANCE_API_BASE_URL + "/" +
                                 BINANCE_API_VERSION + "/" +
                                 K_LINES_PATH + "?" +
-                                SYMBOL + "=" + symbol + "&" +
-                                INTERVAL + "=" + interval + "&" +
-                                LIMIT + "=" + limit,
+                                SYMBOL + "=" + input.getSymbol() + "&" +
+                                INTERVAL + "=" + input.getInterval() + "&" +
+                                LIMIT + "=" + input.getLimit(),
                         String.class)
                 .getBody();
     }

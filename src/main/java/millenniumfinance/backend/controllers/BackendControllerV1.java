@@ -1,18 +1,16 @@
 package millenniumfinance.backend.controllers;
 
 import millenniumfinance.backend.clients.BinanceClient;
-import millenniumfinance.backend.data.v1.structures.BotSimulationInput;
-import millenniumfinance.backend.data.v1.structures.DataRow;
-import millenniumfinance.backend.data.v1.structures.DataTable;
-import millenniumfinance.backend.data.v1.structures.GainLossReport;
+import millenniumfinance.backend.data.v1.structures.*;
 import millenniumfinance.backend.services.SimulationBot;
 import org.slf4j.Logger;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-import static millenniumfinance.backend.Constants.*;
 import static millenniumfinance.backend.data.v1.structures.DataTable.fromBinanceApiString;
 import static org.slf4j.LoggerFactory.getLogger;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
@@ -39,14 +37,13 @@ public class BackendControllerV1 {
         this.simulationBot = simulationBot;
     }
 
-    @GetMapping(path = DATA_CALCULATE_ENDPOINT, produces = APPLICATION_JSON_VALUE)
+    @PostMapping(path = DATA_CALCULATE_ENDPOINT, produces = APPLICATION_JSON_VALUE)
     public ResponseEntity<List<DataRow>> getCalculatedData(
-            @RequestParam(defaultValue = SYMBOL_BITCOIN) String symbol,
-            @RequestParam(defaultValue = INTERVAL_ONE_MINUTE) String interval,
-            @RequestParam(defaultValue = LIMIT_1) String limit
+            @RequestBody CalculateDataInput calculateDataInput
     ) {
         logger.debug("Hit endpoint: " + DATA_CALCULATE_ENDPOINT);
-        DataTable dataTable = fromBinanceApiString(binanceClient.getCandlestickData(symbol, interval, limit));
+        logger.debug("Calculating data with input of: " + calculateDataInput.toString());
+        DataTable dataTable = fromBinanceApiString(binanceClient.getCandlestickData(calculateDataInput));
         return ok(dataTable.getDataRows());
     }
 
@@ -57,11 +54,7 @@ public class BackendControllerV1 {
         logger.debug("Hit endpoint: " + BOT_RUN_SIMULATION);
         logger.debug("Running simulation with input of: " + botSimulationInput.toString());
         GainLossReport gainLossReport = simulationBot.runSimulation(
-                fromBinanceApiString(binanceClient.getCandlestickData(
-                        botSimulationInput.getSymbol(),
-                        botSimulationInput.getInterval(),
-                        botSimulationInput.getLimit())
-                ),
+                fromBinanceApiString(binanceClient.getCandlestickData(botSimulationInput.getCalculateDataInput())),
                 botSimulationInput
         );
         return ok(gainLossReport);

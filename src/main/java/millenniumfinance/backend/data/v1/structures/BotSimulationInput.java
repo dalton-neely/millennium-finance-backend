@@ -1,9 +1,7 @@
 package millenniumfinance.backend.data.v1.structures;
 
 public final class BotSimulationInput {
-    private String symbol;
-    private String interval;
-    private String limit;
+    private CalculateDataInput calculateDataInput;
     private WhenToDelayABuyAfterALossParameters whenToDelayABuyAfterALossParameters;
     private WhenToBuyAfterALossParameters whenToBuyAfterALossParameters;
     private WhenToBuyParameters whenToBuyParameters;
@@ -14,28 +12,12 @@ public final class BotSimulationInput {
     public BotSimulationInput() {
     }
 
-    public String getSymbol() {
-        return symbol;
+    public CalculateDataInput getCalculateDataInput() {
+        return calculateDataInput;
     }
 
-    public void setSymbol(String symbol) {
-        this.symbol = symbol;
-    }
-
-    public String getInterval() {
-        return interval;
-    }
-
-    public void setInterval(String interval) {
-        this.interval = interval;
-    }
-
-    public String getLimit() {
-        return limit;
-    }
-
-    public void setLimit(String limit) {
-        this.limit = limit;
+    public void setCalculateDataInput(CalculateDataInput calculateDataInput) {
+        this.calculateDataInput = calculateDataInput;
     }
 
     public WhenToDelayABuyAfterALossParameters getWhenToDelayABuyAfterALossParameters() {
@@ -89,9 +71,7 @@ public final class BotSimulationInput {
     @Override
     public String toString() {
         return "BotSimulationInput{" +
-                "symbol='" + symbol + '\'' +
-                ", interval='" + interval + '\'' +
-                ", limit='" + limit + '\'' +
+                "calculateDataInput=" + calculateDataInput +
                 ", whenToDelayABuyAfterALossParameters=" + whenToDelayABuyAfterALossParameters +
                 ", whenToBuyAfterALossParameters=" + whenToBuyAfterALossParameters +
                 ", whenToBuyParameters=" + whenToBuyParameters +
