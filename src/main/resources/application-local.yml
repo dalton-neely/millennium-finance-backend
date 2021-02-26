@@ -1,0 +1,13 @@
+---
+server:
+  port: 8080
+logging:
+  level:
+    root: debug
+    org:
+      apache: off
+      springframework: error
+    javax: off
+    sun: off
+    java: off
+    jdk: error

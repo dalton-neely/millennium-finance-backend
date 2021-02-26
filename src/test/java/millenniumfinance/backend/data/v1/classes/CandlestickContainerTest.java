@@ -1,11 +1,11 @@
-package millenniumfinance.backend.data.classes;
+package millenniumfinance.backend.data.v1.classes;
 
-import millenniumfinance.backend.data.structures.Candlestick;
+import millenniumfinance.backend.data.v1.structures.Candlestick;
 import org.junit.jupiter.api.Test;
 
 import java.util.Date;
 
-import static millenniumfinance.backend.data.classes.CandlestickContainer.fromBinanceApiString;
+import static millenniumfinance.backend.data.v1.classes.CandlestickContainer.fromBinanceApiString;
 import static org.junit.jupiter.api.Assertions.*;
 
 class CandlestickContainerTest {

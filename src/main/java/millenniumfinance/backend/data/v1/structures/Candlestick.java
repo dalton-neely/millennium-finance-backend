@@ -1,4 +1,4 @@
-package millenniumfinance.backend.data.structures;
+package millenniumfinance.backend.data.v1.structures;
 
 import java.util.Date;
 
@@ -73,6 +73,23 @@ public final class Candlestick {
         return takerBuyQuoteAssetVolume;
     }
 
+    @Override
+    public String toString() {
+        return "{" +
+                "\"openTime\": " + openTime.getTime() + ", " +
+                "\"openPrice\": " + openPrice + ", " +
+                "\"highestPrice\": " + highestPrice + ", " +
+                "\"lowestPrice\": " + lowestPrice + ", " +
+                "\"closePrice\": " + closePrice + ", " +
+                "\"volume\": " + volume + ", " +
+                "\"closeTime\": " + closeTime.getTime() + ", " +
+                "\"quoteAssetVolume\": " + quoteAssetVolume + ", " +
+                "\"numberOfTrades\": " + numberOfTrades + ", " +
+                "\"takerBuyBaseAssetVolume\": " + takerBuyBaseAssetVolume + ", " +
+                "\"takerBuyQuoteAssetVolume\": " + takerBuyQuoteAssetVolume +
+                "}";
+    }
+
     public static class CandlestickBuilder {
         private Date openTime;
         private Double openPrice;
@@ -141,25 +158,8 @@ public final class Candlestick {
             return this;
         }
 
-        public Candlestick build(){
+        public Candlestick build() {
             return new Candlestick(this);
         }
-    }
-
-    @Override
-    public String toString() {
-        return "Candlestick{" +
-                "openTime=" + openTime +
-                ", openPrice=" + openPrice +
-                ", highestPrice=" + highestPrice +
-                ", lowestPrice=" + lowestPrice +
-                ", closePrice=" + closePrice +
-                ", volume=" + volume +
-                ", closeTime=" + closeTime +
-                ", quoteAssetVolume=" + quoteAssetVolume +
-                ", numberOfTrades=" + numberOfTrades +
-                ", takerBuyBaseAssetVolume=" + takerBuyBaseAssetVolume +
-                ", takerBuyQuoteAssetVolume=" + takerBuyQuoteAssetVolume +
-                '}';
     }
 }

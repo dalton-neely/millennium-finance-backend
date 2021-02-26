@@ -1,6 +1,6 @@
-package millenniumfinance.backend.data.structures;
+package millenniumfinance.backend.data.v1.structures;
 
-import millenniumfinance.backend.data.classes.CandlestickContainer;
+import millenniumfinance.backend.data.v1.classes.CandlestickContainer;
 
 public final class DataRow {
     private final CandlestickContainer candlestickContainer;
@@ -114,24 +114,24 @@ public final class DataRow {
 
     @Override
     public String toString() {
-        return "DataRow{" +
-                "candlestickContainer=" + candlestickContainer +
-                ", exponentialMovingAverageTwelvePeriods=" + exponentialMovingAverageTwelvePeriods +
-                ", exponentialMovingAverageTwentySixPeriods=" + exponentialMovingAverageTwentySixPeriods +
-                ", movingAverageConvergenceDivergence=" + movingAverageConvergenceDivergence +
-                ", movingAverageConvergenceDivergenceSignal=" + movingAverageConvergenceDivergenceSignal +
-                ", oneMinuteLongTermMovingAverageTwentyFivePeriods=" + oneMinuteLongTermMovingAverageTwentyFivePeriods +
-                ", oneMinuteMovingAverageFifteenPeriods=" + oneMinuteMovingAverageFifteenPeriods +
-                ", oneMinuteStandardDeviationFifteenPeriods=" + oneMinuteStandardDeviationFifteenPeriods +
-                ", oneMinuteUpperBollingerBandFifteenPeriods=" + oneMinuteUpperBollingerBandFifteenPeriods +
-                ", oneMinuteLowerBollingerBandFifteenPeriods=" + oneMinuteLowerBollingerBandFifteenPeriods +
-                ", oneMinuteRelativeStrengthIndexSixPeriods=" + oneMinuteRelativeStrengthIndexSixPeriods +
-                ", fifteenMinuteLongTermMovingAverage375Periods=" + fifteenMinuteLongTermMovingAverage375Periods +
-                ", fifteenMinuteMovingAverage225Periods=" + fifteenMinuteMovingAverage225Periods +
-                ", fifteenMinuteStandDeviation225Periods=" + fifteenMinuteStandDeviation225Periods +
-                ", fifteenMinuteUpperBollingerBand225Periods=" + fifteenMinuteUpperBollingerBand225Periods +
-                ", fifteenMinuteLowerBollingerBand222Periods=" + fifteenMinuteLowerBollingerBand222Periods +
-                ", fifteenMinuteRelativeStrengthIndex90Periods=" + fifteenMinuteRelativeStrengthIndex90Periods +
+        return "{" +
+                "\"candlestickContainer\": " + candlestickContainer +
+                ", \"exponentialMovingAverageTwelvePeriods\": " + exponentialMovingAverageTwelvePeriods +
+                ", \"exponentialMovingAverageTwentySixPeriods\": " + exponentialMovingAverageTwentySixPeriods +
+                ", \"movingAverageConvergenceDivergence\": " + movingAverageConvergenceDivergence +
+                ", \"movingAverageConvergenceDivergenceSignal\": " + movingAverageConvergenceDivergenceSignal +
+                ", \"oneMinuteLongTermMovingAverageTwentyFivePeriods\": " + oneMinuteLongTermMovingAverageTwentyFivePeriods +
+                ", \"oneMinuteMovingAverageFifteenPeriods\": " + oneMinuteMovingAverageFifteenPeriods +
+                ", \"oneMinuteStandardDeviationFifteenPeriods\": " + oneMinuteStandardDeviationFifteenPeriods +
+                ", \"oneMinuteUpperBollingerBandFifteenPeriods\": " + oneMinuteUpperBollingerBandFifteenPeriods +
+                ", \"oneMinuteLowerBollingerBandFifteenPeriods\": " + oneMinuteLowerBollingerBandFifteenPeriods +
+                ", \"oneMinuteRelativeStrengthIndexSixPeriods\": " + oneMinuteRelativeStrengthIndexSixPeriods +
+                ", \"fifteenMinuteLongTermMovingAverage375Periods\": " + fifteenMinuteLongTermMovingAverage375Periods +
+                ", \"fifteenMinuteMovingAverage225Periods\": " + fifteenMinuteMovingAverage225Periods +
+                ", \"fifteenMinuteStandDeviation225Periods\": " + fifteenMinuteStandDeviation225Periods +
+                ", \"fifteenMinuteUpperBollingerBand225Periods\": " + fifteenMinuteUpperBollingerBand225Periods +
+                ", \"fifteenMinuteLowerBollingerBand222Periods\": " + fifteenMinuteLowerBollingerBand222Periods +
+                ", \"fifteenMinuteRelativeStrengthIndex90Periods\": " + fifteenMinuteRelativeStrengthIndex90Periods +
                 '}';
     }
 

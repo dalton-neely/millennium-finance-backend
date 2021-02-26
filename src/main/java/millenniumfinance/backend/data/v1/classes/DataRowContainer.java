@@ -1,8 +1,6 @@
-package millenniumfinance.backend.data.classes;
+package millenniumfinance.backend.data.v1.classes;
 
-import millenniumfinance.backend.data.structures.DataRow;
-
-import static millenniumfinance.backend.utilities.FinancialCalculations.calculateAllRollingMean;
+import millenniumfinance.backend.data.v1.structures.DataRow;
 
 public class DataRowContainer {
     private final DataRow dataRow;
@@ -32,7 +30,7 @@ public class DataRowContainer {
             Double fifteenMinuteLowerBollingerBand222Periods,
             Double fifteenMinuteRelativeStrengthIndex90Periods,
             int index
-            ) {
+    ) {
         DataRow dataRow = new DataRow
                 .DataRowBuilder()
                 .candlestickContainer(candlestickContainer)
@@ -64,11 +62,17 @@ public class DataRowContainer {
         return index;
     }
 
-    @Override
-    public String toString() {
+    public String toJavaString() {
         return "DataRowContainer{" +
                 "dataRow=" + dataRow +
                 ", index=" + index +
                 '}';
+    }
+
+    @Override
+    public String toString() {
+        return this.getDataRow().toString()
+                .replace("DataRowContainer", "")
+                .replaceAll("=", ": ");
     }
 }

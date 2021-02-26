@@ -1,57 +1,38 @@
-package millenniumfinance.backend.data.classes;
+package millenniumfinance.backend.data.v1.classes;
 
-import millenniumfinance.backend.data.structures.DataTable;
+import millenniumfinance.backend.data.v1.structures.DataTable;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import static java.util.Arrays.asList;
-import static millenniumfinance.backend.data.classes.DataRowContainer.fromComputedData;
+import static millenniumfinance.backend.data.v1.classes.DataRowContainer.fromComputedData;
 import static millenniumfinance.backend.utilities.FinancialCalculations.*;
 
 public class DataTableContainer {
-    private final DataTable dataTable;
     public final static int NINE_PERIODS = 9;
     public final static int TWELVE_PERIODS = 12;
     public final static int TWENTY_SIX_PERIODS = 26;
+    private final DataTable dataTable;
 
-    private DataTableContainer(DataTable dataTable){
+    private DataTableContainer(DataTable dataTable) {
         this.dataTable = dataTable;
     }
 
-    public static DataTableContainer fromBinanceApiString(String inputString, String inputString15min){
+    public static DataTableContainer fromBinanceApiString(String inputString) {
         // Format and split string for serialization
         final String withoutLeadingAndTrailing = inputString.substring(1, inputString.length() - 1);
         final String replaceWithDifferentSeparator = withoutLeadingAndTrailing.replaceAll("],\\[", "]@[");
         final List<String> splitByCommas = asList(replaceWithDifferentSeparator.split("@"));
-
-        final List<String> splitByCommas15min = asList(
-                inputString15min.substring(1, inputString15min.length() - 1)
-                        .replaceAll("],\\[", "]@[")
-                        .split("@")
-        );
 
         // Create object list from strings
         List<CandlestickContainer> candlestickContainers = splitByCommas.stream()
                 .map(CandlestickContainer::fromBinanceApiString)
                 .collect(Collectors.toList());
 
-        List<CandlestickContainer> candlestickContainers15min = splitByCommas15min.stream()
-                .map(CandlestickContainer::fromBinanceApiString)
-                .collect(Collectors.toList());
-
         // Get the close prices list for further calculations
         List<Double> closePrices = candlestickContainers
-                .stream()
-                .map(candlestickContainer ->
-                        candlestickContainer
-                                .getCandlestick()
-                                .getClosePrice()
-                ).collect(Collectors.toList());
-
-        List<Double> closePrices15min = candlestickContainers15min
                 .stream()
                 .map(candlestickContainer ->
                         candlestickContainer
@@ -91,11 +72,11 @@ public class DataTableContainer {
                 calculateAllRollingStandardDeviation(closePrices, 15);
 
         List<Double> fifteenMinuteLongTermMovingAverage375Periods =
-                calculateAllRollingMean(closePrices15min, 25);
+                calculateAllRollingMean(closePrices, 375);
         List<Double> fifteenMinuteMovingAverage225Periods =
-                calculateAllRollingMean(closePrices15min, 15);
+                calculateAllRollingMean(closePrices, 225);
         List<Double> fifteenMinuteStandDeviation225Periods =
-                calculateAllRollingStandardDeviation(closePrices, 15);
+                calculateAllRollingStandardDeviation(closePrices, 225);
 
         // Calculate Bollinger Bands
         List<Double> oneMinuteUpperBollingerBandFifteenPeriods =
@@ -129,11 +110,11 @@ public class DataTableContainer {
                 calculateAllRelativeStrengthIndex(closePrices, 6);
 
         List<Double> fifteenMinuteRelativeStrengthIndex90Periods =
-                calculateAllRelativeStrengthIndex(closePrices15min, 6);
+                calculateAllRelativeStrengthIndex(closePrices, 90);
 
         // Shove all computed data into a list of smart containers with indexes
         List<DataRowContainer> dataRowContainerList = new ArrayList<>();
-        for(int i = 0; i < candlestickContainers.size(); i++) {
+        for (int i = 0; i < candlestickContainers.size(); i++) {
             dataRowContainerList.add(fromComputedData(
                     candlestickContainers.get(i),
                     exponentialMovingAverageTwelvePeriods.get(i),
@@ -165,5 +146,18 @@ public class DataTableContainer {
 
     public DataTable getDataTable() {
         return dataTable;
+    }
+
+    public String toJavaString() {
+        return "DataTableContainer{" +
+                "dataTable=" + dataTable +
+                '}';
+    }
+
+    @Override
+    public String toString() {
+        return this.toJavaString()
+                .replace("DataTableContainer", "")
+                .replaceAll(",", ": ");
     }
 }

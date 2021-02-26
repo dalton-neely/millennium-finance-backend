@@ -1,6 +1,6 @@
-package millenniumfinance.backend.data.structures;
+package millenniumfinance.backend.data.v1.structures;
 
-import millenniumfinance.backend.data.classes.DataRowContainer;
+import millenniumfinance.backend.data.v1.classes.DataRowContainer;
 
 import java.util.List;
 
@@ -11,11 +11,21 @@ public final class DataTable {
         this.dataRows = builder.dataRows;
     }
 
-    @Override
-    public String toString() {
+    public String toJavaString() {
         return "DataTable{" +
                 "dataRows=" + dataRows +
                 '}';
+    }
+
+    @Override
+    public String toString() {
+        return this.getDataRows().toString()
+                .replace("DataTable", "")
+                .replaceAll("=", ": ");
+    }
+
+    public List<DataRowContainer> getDataRows() {
+        return dataRows;
     }
 
     public static class DataTableBuilder {
@@ -29,9 +39,5 @@ public final class DataTable {
         public DataTable build() {
             return new DataTable(this);
         }
-    }
-
-    public List<DataRowContainer> getDataRows() {
-        return dataRows;
     }
 }

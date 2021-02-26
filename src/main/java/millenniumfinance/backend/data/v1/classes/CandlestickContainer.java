@@ -1,6 +1,6 @@
-package millenniumfinance.backend.data.classes;
+package millenniumfinance.backend.data.v1.classes;
 
-import millenniumfinance.backend.data.structures.Candlestick;
+import millenniumfinance.backend.data.v1.structures.Candlestick;
 
 import java.util.Date;
 import java.util.List;
@@ -19,21 +19,21 @@ public final class CandlestickContainer {
 
     /**
      * Example String Input from Binance
-     *
-     *     [
-     *         1613908800000, // 0 - open time in milliseconds since epoch
-     *         "57315.5900",  // 1 - open price
-     *         "57359.5500",  // 2 - highest price
-     *         "57315.5900",  // 3 - lowest price
-     *         "57358.3600",  // 4 - close price
-     *         "1.03935300",  // 5 - volume
-     *         1613908859999, // 6 - close time in milliseconds since epoch
-     *         "59586.5483",  // 7 - quote asset volume
-     *         46,            // 8 - number of trades
-     *         "0.84456200",  // 9 - taker buy base asset volume
-     *         "48418.6341",  // 10 - taker buy quote asset volume
-     *         "0"            // 11 - ignore this value
-     *     ]
+     * <p>
+     * [
+     * 1613908800000, // 0 - open time in milliseconds since epoch
+     * "57315.5900",  // 1 - open price
+     * "57359.5500",  // 2 - highest price
+     * "57315.5900",  // 3 - lowest price
+     * "57358.3600",  // 4 - close price
+     * "1.03935300",  // 5 - volume
+     * 1613908859999, // 6 - close time in milliseconds since epoch
+     * "59586.5483",  // 7 - quote asset volume
+     * 46,            // 8 - number of trades
+     * "0.84456200",  // 9 - taker buy base asset volume
+     * "48418.6341",  // 10 - taker buy quote asset volume
+     * "0"            // 11 - ignore this value
+     * ]
      */
     public static CandlestickContainer fromBinanceApiString(String input) {
         final String leftBracket = "\\[";
@@ -66,10 +66,16 @@ public final class CandlestickContainer {
         return candlestick;
     }
 
-    @Override
-    public String toString() {
+    public String toJavaString() {
         return "CandlestickContainer{" +
                 "candlestick=" + candlestick +
                 '}';
+    }
+
+    @Override
+    public String toString() {
+        return this.getCandlestick().toString()
+                .replace("CandlestickContainer", "")
+                .replaceAll("=", ": ");
     }
 }

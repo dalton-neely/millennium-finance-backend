@@ -156,8 +156,6 @@ public final class FinancialCalculations {
                 differenceInPrice.add(calculateGainOrLoss(closePrices.get(i), closePrices.get(i + 1)));
             }
         }
-        System.out.println(differenceInPrice);
-        System.out.println(differenceInPrice.size());
         List<Double> positiveDifferences = differenceInPrice
                 .stream()
                 .map(difference -> {
@@ -168,8 +166,6 @@ public final class FinancialCalculations {
                     }
                 })
                 .collect(Collectors.toList());
-        System.out.println(positiveDifferences);
-        System.out.println(positiveDifferences.size());
         List<Double> negativeDifferences = differenceInPrice
                 .stream()
                 .map(difference -> {
@@ -180,8 +176,6 @@ public final class FinancialCalculations {
                     }
                 })
                 .collect(Collectors.toList());
-        System.out.println(negativeDifferences);
-        System.out.println(negativeDifferences.size());
 
         List<Double> positiveDifferencesAverage = new ArrayList<>();
         for(int i = 1; i <= positiveDifferences.size(); i++){
@@ -194,8 +188,6 @@ public final class FinancialCalculations {
                 positiveDifferencesAverage.add(summation(subList) / windowSize);
             }
         }
-        System.out.println(positiveDifferencesAverage);
-        System.out.println(positiveDifferences.size());
 
         List<Double> negativeDifferenceAverages = new ArrayList<>();
         for(int i = 1; i <= negativeDifferences.size(); i++){
@@ -208,8 +200,6 @@ public final class FinancialCalculations {
                 negativeDifferenceAverages.add(summation(subList) / windowSize);
             }
         }
-        System.out.println(negativeDifferenceAverages);
-        System.out.println(negativeDifferenceAverages.size());
 
         for(int i = 0; i < closePrices.size(); i++){
             if(i < windowSize - 1) {
@@ -220,8 +210,6 @@ public final class FinancialCalculations {
                 relativeStrengthIndex.add(100 - (100 / (1 + (((positiveDifferencesAverage.get(i - 1) * (windowSize - 1)) + positiveDifferencesAverage.get(i))/-((negativeDifferenceAverages.get(i - 1) * (windowSize - 1)) + negativeDifferenceAverages.get(i))))));
             }
         }
-        System.out.println(relativeStrengthIndex);
-        System.out.println(relativeStrengthIndex.size());
 
         return relativeStrengthIndex;
     }
