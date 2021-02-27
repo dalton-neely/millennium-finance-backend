@@ -8,6 +8,11 @@ compiling and running the server. To achieve this run the command.
 ```
 This will spin up a server ot [localhost:8080](http://localhost:8080/) that can be contacted via a REST API.
 
+## How to Run with Docker
+```bash
+./gradlew build && docker rm --force current-backend && docker build --tag millennium-finance-backend . && docker run --publish 8080:8080 --name current-backend millennium-finance-backend && docker logs current-backend
+```
+
 ## REST API Endpoints
 1. Calculate Financial Indicator Data - POST: `/api/v1/data/calculate`
    
