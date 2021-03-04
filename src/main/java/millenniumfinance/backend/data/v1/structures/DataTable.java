@@ -1,12 +1,16 @@
 package millenniumfinance.backend.data.v1.structures;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static java.math.BigDecimal.ZERO;
+import static java.math.BigDecimal.valueOf;
 import static java.util.Arrays.asList;
 import static millenniumfinance.backend.data.v1.structures.DataRow.fromComputedData;
 import static millenniumfinance.backend.utilities.FinancialCalculations.*;
+import static millenniumfinance.backend.utilities.RelativeStrengthIndexCalculation.calculateRsi;
 
 public final class DataTable {
     public final static int NINE_PERIODS = 9;
@@ -34,24 +38,25 @@ public final class DataTable {
                 .collect(Collectors.toList());
 
         // Get the close prices list for further calculations
-        List<Double> closePrices = candlestickContainers
+        List<BigDecimal> closePrices = candlestickContainers
                 .stream()
                 .map(Candlestick::getClosePrice)
+                .map(BigDecimal::valueOf)
                 .collect(Collectors.toList());
 
         // Get the exponential moving averages
-        List<Double> exponentialMovingAveragesShortTerm = calculateAllExponentialMovingAverages(closePrices, TWELVE_PERIODS, 0);
-        List<Double> exponentialMovingAveragesLongTerm = calculateAllExponentialMovingAverages(closePrices, TWENTY_SIX_PERIODS, 0);
+        List<BigDecimal> exponentialMovingAveragesShortTerm = calculateAllExponentialMovingAverages(closePrices, TWELVE_PERIODS, 0);
+        List<BigDecimal> exponentialMovingAveragesLongTerm = calculateAllExponentialMovingAverages(closePrices, TWENTY_SIX_PERIODS, 0);
 
         // Get the moving average convergence divergence for all the entries
-        List<Double> movingAverageConvergenceDivergence =
+        List<BigDecimal> movingAverageConvergenceDivergence =
                 calculateAllMovingAverageConvergenceDivergence(
                         exponentialMovingAveragesShortTerm,
                         exponentialMovingAveragesLongTerm
                 );
 
         // Get the signal for all the entries
-        List<Double> signals =
+        List<BigDecimal> signals =
                 calculateAllExponentialMovingAverages(
                         movingAverageConvergenceDivergence,
                         NINE_PERIODS,
@@ -59,68 +64,74 @@ public final class DataTable {
                 );
 
         // Calculate means and standard deviations
-        List<Double> longTermMovingAverages = calculateAllRollingMean(closePrices, WINDOW_SIZE_25);
-        List<Double> movingAverages = calculateAllRollingMean(closePrices, WINDOW_SIZE_15);
-        List<Double> standardDeviations = calculateAllRollingStandardDeviation(closePrices, WINDOW_SIZE_15);
-        List<Double> smoothedLongTermMovingAverages = calculateAllRollingMean(closePrices, WINDOW_SIZE_375);
-        List<Double> smoothedMovingAverages = calculateAllRollingMean(closePrices, WINDOW_SIZE_225);
-        List<Double> smoothedStandDeviations = calculateAllRollingStandardDeviation(closePrices, WINDOW_SIZE_225);
+        List<BigDecimal> longTermMovingAverages = calculateAllRollingMean(closePrices, WINDOW_SIZE_25);
+        List<BigDecimal> movingAverages = calculateAllRollingMean(closePrices, WINDOW_SIZE_15);
+        List<BigDecimal> standardDeviations = calculateAllRollingStandardDeviation(closePrices, WINDOW_SIZE_15);
+        List<BigDecimal> smoothedLongTermMovingAverages = calculateAllRollingMean(closePrices, WINDOW_SIZE_375);
+        List<BigDecimal> smoothedMovingAverages = calculateAllRollingMean(closePrices, WINDOW_SIZE_225);
+        List<BigDecimal> smoothedStandDeviations = calculateAllRollingStandardDeviation(closePrices, WINDOW_SIZE_225);
 
         // Calculate Bollinger Bands
-        List<Double> upperBollingerBands =
+        List<BigDecimal> upperBollingerBands =
                 calculateAllUpperBollingerBands(
                         movingAverages,
                         standardDeviations,
-                        2.25D
+                        valueOf(2.25D)
                 );
-        List<Double> lowerBollingerBands =
+        List<BigDecimal> lowerBollingerBands =
                 calculateAllLowerBollingerBands(
                         movingAverages,
                         standardDeviations,
-                        2.5D
+                        valueOf(2.5D)
                 );
 
-        List<Double> smoothedUpperBollingerBands =
+        List<BigDecimal> smoothedUpperBollingerBands =
                 calculateAllUpperBollingerBands(
                         smoothedMovingAverages,
                         smoothedStandDeviations,
-                        2.25D
+                        valueOf(2.25D)
                 );
-        List<Double> smoothedLowerBollingerBands =
+        List<BigDecimal> smoothedLowerBollingerBands =
                 calculateAllLowerBollingerBands(
                         smoothedMovingAverages,
                         smoothedStandDeviations,
-                        2.5D
+                        valueOf(2.5D)
                 );
 
+//        // Calculate RSI
+//        List<BigDecimal> relativeStrengthIndices =
+//                calculateAllRelativeStrengthIndex(closePrices, 6);
+//
+//        List<BigDecimal> smoothedRelativeStrengthIndices =
+//                calculateAllRelativeStrengthIndex(closePrices, 90);
         // Calculate RSI
-        List<Double> relativeStrengthIndices =
-                calculateAllRelativeStrengthIndex(closePrices, 6);
+        List<BigDecimal> relativeStrengthIndices =
+                calculateRsi(closePrices, 6);
 
-        List<Double> smoothedRelativeStrengthIndices =
-                calculateAllRelativeStrengthIndex(closePrices, 90);
+        List<BigDecimal> smoothedRelativeStrengthIndices =
+                calculateRsi(closePrices, 90);
 
         // Shove all computed data into a list of smart containers with indexes
         List<DataRow> dataRows = new ArrayList<>();
         for (int i = 0; i < candlestickContainers.size(); i++) {
             dataRows.add(fromComputedData(
                     candlestickContainers.get(i),
-                    exponentialMovingAveragesShortTerm.get(i),
-                    exponentialMovingAveragesLongTerm.get(i),
-                    movingAverageConvergenceDivergence.get(i),
-                    signals.get(i),
-                    longTermMovingAverages.get(i),
-                    movingAverages.get(i),
-                    standardDeviations.get(i),
-                    upperBollingerBands.get(i),
-                    lowerBollingerBands.get(i),
-                    relativeStrengthIndices.get(i),
-                    smoothedLongTermMovingAverages.get(i),
-                    smoothedMovingAverages.get(i),
-                    smoothedStandDeviations.get(i),
-                    smoothedUpperBollingerBands.get(i),
-                    smoothedLowerBollingerBands.get(i),
-                    smoothedRelativeStrengthIndices.get(i),
+                    exponentialMovingAveragesShortTerm.get(i).doubleValue(),
+                    exponentialMovingAveragesLongTerm.get(i).doubleValue(),
+                    movingAverageConvergenceDivergence.get(i).doubleValue(),
+                    signals.get(i).doubleValue(),
+                    longTermMovingAverages.get(i).doubleValue(),
+                    movingAverages.get(i).doubleValue(),
+                    standardDeviations.get(i).doubleValue(),
+                    upperBollingerBands.get(i).doubleValue(),
+                    lowerBollingerBands.get(i).doubleValue(),
+                    relativeStrengthIndices.get(i).doubleValue(),
+                    smoothedLongTermMovingAverages.get(i).doubleValue(),
+                    smoothedMovingAverages.get(i).doubleValue(),
+                    smoothedStandDeviations.get(i).doubleValue(),
+                    smoothedUpperBollingerBands.get(i).doubleValue(),
+                    smoothedLowerBollingerBands.get(i).doubleValue(),
+                    smoothedRelativeStrengthIndices.get(i).doubleValue(),
                     i
             ));
         }

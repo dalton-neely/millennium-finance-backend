@@ -10,6 +10,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
+import static java.math.BigDecimal.valueOf;
 import static millenniumfinance.backend.data.v1.enumerations.PositionState.BUY;
 import static millenniumfinance.backend.data.v1.enumerations.PositionState.SELL;
 import static millenniumfinance.backend.data.v1.enumerations.TradeMethod.*;
@@ -123,7 +124,7 @@ public final class SimulationBot {
                             .setTradeMethod(SELL_FOR_LONG)
                             .setRelativeStrengthIndex(relativeStrengthIndex)
                             .build());
-                } else if (calculateGainOrLoss(price, lastBuyPrice) < sellForALoss.getFloorGainLossPercentage() &&
+                } else if (calculateGainOrLoss(valueOf(price), valueOf(lastBuyPrice)).doubleValue() < sellForALoss.getFloorGainLossPercentage() &&
                         position.isInMarket()
                 ) {
                     amountOfLosses++;
