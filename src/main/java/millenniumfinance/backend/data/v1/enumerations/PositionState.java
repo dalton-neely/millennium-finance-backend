@@ -3,7 +3,8 @@ package millenniumfinance.backend.data.v1.enumerations;
 public enum PositionState {
     BUY("buy"),
     SELL("sell"),
-    HOLD("hold");
+    HOLD("hold"),
+    STOP_LOSS("stop-loss");
 
     private final String value;
 

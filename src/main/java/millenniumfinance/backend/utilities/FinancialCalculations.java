@@ -8,7 +8,6 @@ import java.math.MathContext;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.BinaryOperator;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 import static java.math.BigDecimal.*;
@@ -335,14 +334,14 @@ public final class FinancialCalculations {
         return fromNumber(fromNumber(100).subtract(hundredOverGainLoss, MATH_CONTEXT));
     }
 
-    public static BigDecimal calculateGainOrLoss(BigDecimal purchasePrice, BigDecimal soldPrice) {
-        return fromNumber(soldPrice.subtract(purchasePrice, MATH_CONTEXT).divide(purchasePrice, MATH_CONTEXT));
+    public static BigDecimal gainLoss(BigDecimal purchasePrice, BigDecimal soldPrice) {
+        return divide(subtract(soldPrice, purchasePrice), purchasePrice);
     }
 
     public static List<BigDecimal> calculateAllGainOrLoss(List<BigDecimal> purchasePrices, List<BigDecimal> soldPrices) {
         List<BigDecimal> gainOrLosses = new ArrayList<>();
         for (int index = 0; index < purchasePrices.size(); index++) {
-            gainOrLosses.add(calculateGainOrLoss(purchasePrices.get(index), soldPrices.get(index)));
+            gainOrLosses.add(gainLoss(purchasePrices.get(index), soldPrices.get(index)));
         }
         return gainOrLosses;
     }

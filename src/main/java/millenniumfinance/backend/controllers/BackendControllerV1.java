@@ -53,7 +53,11 @@ public class BackendControllerV1 {
     ) {
         logger.debug("Hit endpoint: " + BOT_RUN_SIMULATION);
         logger.debug("Running simulation with input of: " + botSimulationInput.toString());
-        GainLossReport gainLossReport = simulationBot.runSimulation(
+//        GainLossReport gainLossReport = simulationBot.runSimulation(
+//                fromBinanceApiString(binanceClient.getCandlestickData(botSimulationInput.getCalculateDataInput())),
+//                botSimulationInput
+//        );
+        GainLossReport gainLossReport = simulationBot.runSimulation2(
                 fromBinanceApiString(binanceClient.getCandlestickData(botSimulationInput.getCalculateDataInput())),
                 botSimulationInput
         );

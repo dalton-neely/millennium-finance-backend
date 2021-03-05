@@ -2,6 +2,7 @@ package millenniumfinance.backend.utilities;
 
 import java.math.BigDecimal;
 import java.math.MathContext;
+import java.security.PublicKey;
 import java.util.Arrays;
 import java.util.List;
 
@@ -11,8 +12,11 @@ import static java.util.stream.Collectors.toList;
 
 public final class BigDecimalHelpers {
     public static final Integer PRECISION = 10;
-    public static final BigDecimal ZEROS = new BigDecimal("0.0000000000");
     public static final MathContext MATH_CONTEXT = new MathContext(PRECISION, HALF_UP);
+    public static final BigDecimal ZEROS = fromNumber(0);
+    public static final BigDecimal ONES = fromNumber(1);
+    public static final BigDecimal TENS = fromNumber(10);
+    public static final BigDecimal ONE_HUNDREDS = fromNumber(100);
 
     public static List<BigDecimal> fromNumbers(Double... values) {
         return Arrays.stream(values)
@@ -34,6 +38,10 @@ public final class BigDecimalHelpers {
 
     public static BigDecimal format(BigDecimal bigDecimal){
         return bigDecimal.setScale(PRECISION, HALF_UP);
+    }
+
+    public static BigDecimal formatTwoPlaces(BigDecimal bigDecimal) {
+        return bigDecimal.setScale(2, HALF_UP);
     }
 
     public static BigDecimal addition(BigDecimal first, BigDecimal second){
@@ -62,5 +70,17 @@ public final class BigDecimalHelpers {
 
     public static boolean isEqualToZero(BigDecimal bigDecimal){
         return bigDecimal.compareTo(ZERO) == 0;
+    }
+
+    public static boolean isGreaterThan(BigDecimal bigDecimal, BigDecimal compareValue) {
+        return bigDecimal.compareTo(compareValue) > 0;
+    }
+
+    public static boolean isLessThan(BigDecimal bigDecimal, BigDecimal compareValue){
+        return bigDecimal.compareTo(compareValue) < 0;
+    }
+
+    public static boolean isEqualTo(BigDecimal bigDecimal, BigDecimal compareValue){
+        return bigDecimal.compareTo(compareValue) == 0;
     }
 }

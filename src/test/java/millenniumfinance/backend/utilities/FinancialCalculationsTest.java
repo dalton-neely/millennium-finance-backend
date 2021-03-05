@@ -6,14 +6,10 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import java.math.BigDecimal;
-import java.math.MathContext;
-import java.math.RoundingMode;
 import java.util.List;
 import java.util.stream.Stream;
 
-import static java.math.BigDecimal.ZERO;
 import static java.math.BigDecimal.valueOf;
-import static java.util.stream.Collectors.toList;
 import static java.util.stream.Stream.*;
 import static millenniumfinance.backend.utilities.BigDecimalHelpers.fromNumber;
 import static millenniumfinance.backend.utilities.BigDecimalHelpers.fromNumbers;
@@ -192,7 +188,7 @@ class FinancialCalculationsTest {
         BigDecimal expectedGainOrLoss = fromNumber(0.0500000000);
         BigDecimal purchasePrice = fromNumber(14500.00);
         BigDecimal sellPrice = fromNumber(15225.00);
-        BigDecimal actualGainOrLoss = calculateGainOrLoss(purchasePrice, sellPrice);
+        BigDecimal actualGainOrLoss = gainLoss(purchasePrice, sellPrice);
 
         assertEquals(expectedGainOrLoss, actualGainOrLoss);
     }
