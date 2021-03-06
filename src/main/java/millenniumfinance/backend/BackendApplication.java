@@ -11,29 +11,29 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 
 @SpringBootApplication
 public class BackendApplication {
-    public static void main(String[] args) {
-        SpringApplication.run(BackendApplication.class, args);
-    }
-
-    @Bean
-    public RestTemplate restTemplate() {
-        return new RestTemplate();
-    }
-
-    @Bean
-    public ObjectMapper objectMapper() {
-        return new ObjectMapper();
-    }
-
-    @Bean
-    public WebMvcConfigurer corsConfigurer() {
-        return new WebMvcConfigurerAdapter() {
-            @Override
-            public void addCorsMappings(CorsRegistry registry) {
-                registry.addMapping("/**")
-                        .allowedMethods("HEAD", "GET", "PUT", "POST", "DELETE", "PATCH");
-            }
-        };
-    }
-
+  public static void main(String[] args) {
+    SpringApplication.run(BackendApplication.class, args);
+  }
+  
+  @Bean
+  public RestTemplate restTemplate() {
+    return new RestTemplate();
+  }
+  
+  @Bean
+  public ObjectMapper objectMapper() {
+    return new ObjectMapper();
+  }
+  
+  @Bean
+  public WebMvcConfigurer corsConfigurer() {
+    return new WebMvcConfigurerAdapter() {
+      @Override
+      public void addCorsMappings(CorsRegistry registry) {
+        registry.addMapping("/**")
+            .allowedMethods("HEAD", "GET", "PUT", "POST", "DELETE", "PATCH");
+      }
+    };
+  }
+  
 }
