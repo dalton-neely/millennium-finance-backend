@@ -3,7 +3,7 @@ package millenniumfinance.backend.genetics;
 import java.math.BigDecimal;
 import lombok.Data;
 import millenniumfinance.backend.clients.BinanceClient;
-import millenniumfinance.backend.data.v1.structures.CalculateDataInput;
+import millenniumfinance.backend.data.v2.structures.GeneticAlgorithmInput;
 import millenniumfinance.backend.services.SimulationBot;
 import millenniumfinance.backend.utilities.BigDecimalHelpers;
 import org.springframework.stereotype.Service;
@@ -23,15 +23,15 @@ public class NaturalSelectionService {
     this.bot = bot;
   }
   
-  public NaturalSelectionOutput runNaturalSelection(CalculateDataInput calculateDataInput) {
+  public NaturalSelectionOutput runNaturalSelection(GeneticAlgorithmInput input) {
     NaturalSelectionOutput.NaturalSelectionOutputBuilder builder = NaturalSelectionOutput.builder();
     
     Population population = new Population();
-    population.setRounds(100);
-    population.loadDataInput(fromBinanceApiString(client.getCandlestickData(calculateDataInput)));
+    population.setGenerationSize(input.getGenerationSize());
+    population.loadDataInput(fromBinanceApiString(client.getCandlestickData(input.getDataFetchParameters())));
     population.loadBot(bot);
 //    population.initialGeneration();
-    population.runAllGenerations();
+    population.runAllGenerations(input.getPopulationSize());
 
 //    population.getGenerations().get(0).runSimulation(dataTable, bot);
 

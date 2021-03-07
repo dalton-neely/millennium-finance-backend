@@ -7,6 +7,7 @@ import millenniumfinance.backend.data.v1.structures.DataRow;
 import millenniumfinance.backend.data.v1.structures.DataTable;
 import millenniumfinance.backend.data.v1.structures.GainLossReport;
 import millenniumfinance.backend.data.v2.structures.BotSimulationInput;
+import millenniumfinance.backend.data.v2.structures.GeneticAlgorithmInput;
 import millenniumfinance.backend.genetics.NaturalSelectionOutput;
 import millenniumfinance.backend.genetics.NaturalSelectionService;
 import millenniumfinance.backend.services.SimulationBot;
@@ -70,8 +71,8 @@ public class BackendControllerV1 {
   
   @PostMapping(path = BOT_RUN_SIMULATION_GENETICALLY, produces = APPLICATION_JSON_VALUE)
   public ResponseEntity<NaturalSelectionOutput> runGeneticCode(
-      @RequestBody CalculateDataInput calculateDataInput
+      @RequestBody GeneticAlgorithmInput input
   ) {
-    return ok(naturalSelectionService.runNaturalSelection(calculateDataInput));
+    return ok(naturalSelectionService.runNaturalSelection(input));
   }
 }

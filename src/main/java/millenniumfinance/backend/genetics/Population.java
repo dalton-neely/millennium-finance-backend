@@ -29,7 +29,7 @@ import static millenniumfinance.backend.utilities.BigDecimalHelpers.isEqualTo;
 @Builder
 public class Population {
   private List<Generation> generations = new ArrayList<>();
-  private Integer rounds;
+  private Integer generationSize;
   private Integer generationsRun;
   private DataTable dataTable;
   private SimulationBot bot;
@@ -47,9 +47,9 @@ public class Population {
     System.out.println(generations.size());
   }
   
-  public void runAllGenerations() {
-    initialGeneration();
-    for (int index = 0; index < rounds - 1; index++) {
+  public void runAllGenerations(Integer populationSize) {
+    initialGeneration(populationSize);
+    for (int index = 0; index < generationSize - 1; index++) {
       System.out.println("running generation: " + index);
       Generation current = generations.get(index);
       current.runSimulation(dataTable, bot);
@@ -58,7 +58,7 @@ public class Population {
       List<Phenotype> children = crossover(winners);
       System.out.println("made " + children.size() + " children");
       Generation nextGeneration = new Generation();
-      nextGeneration.setGenerationSize(100);
+      nextGeneration.setPopulationSize(populationSize);
       nextGeneration.seedNew(children);
       generations.add(nextGeneration);
     }
@@ -66,9 +66,9 @@ public class Population {
     System.out.println(generations.get(generations.size() - 2).getWinners().get(0).getReport().toString());
   }
   
-  public void initialGeneration() {
+  public void initialGeneration(Integer populationSize) {
     Generation generation = new Generation();
-    generation.setGenerationSize(100);
+    generation.setPopulationSize(populationSize);
     generation.randomize();
     generations.add(generation);
   }

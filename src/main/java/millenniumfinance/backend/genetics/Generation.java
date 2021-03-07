@@ -23,12 +23,12 @@ import static millenniumfinance.backend.utilities.BigDecimalHelpers.subtract;
 public class Generation {
   private List<Phenotype> phenotypes = new ArrayList<>();
   private List<Phenotype> winners = new ArrayList<>();
-  private Integer generationSize;
+  private Integer populationSize;
   private Integer winnerCircleSize = 20;
   private Integer winnerIndex = 0;
   
   public void randomize() {
-    for (int index = 0; index < generationSize; index++) {
+    for (int index = 0; index < populationSize; index++) {
       Phenotype phenotype = new Phenotype();
       phenotype.setGenotype(new Genotype());
       phenotype.getGenotype().randomize();
@@ -37,7 +37,7 @@ public class Generation {
   }
   
   public void runSimulation(DataTable dataTable, SimulationBot simulationBot) {
-    for (int index = 0; index < generationSize; index++) {
+    for (int index = 0; index < populationSize; index++) {
       Phenotype current = phenotypes.get(index);
       BotSimulationInput genes = current.getGenotype().getGenes();
       GainLossReport report = simulationBot.runSimulation(dataTable, genes);
@@ -82,7 +82,7 @@ public class Generation {
   
   public void seedNew(List<Phenotype> children) {
     phenotypes.addAll(children);
-    for (int index = 0; index < generationSize - children.size(); index++) {
+    for (int index = 0; index < populationSize - children.size(); index++) {
       Phenotype current = new Phenotype();
       current.setGenotype(new Genotype());
       current.getGenotype().randomize();
