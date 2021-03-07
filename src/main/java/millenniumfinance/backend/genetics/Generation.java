@@ -1,5 +1,6 @@
 package millenniumfinance.backend.genetics;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.AllArgsConstructor;
@@ -7,10 +8,12 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import millenniumfinance.backend.data.v1.structures.DataTable;
+import millenniumfinance.backend.data.v1.structures.GainLossReport;
 import millenniumfinance.backend.data.v2.structures.GeneticAlgorithmInput;
 import millenniumfinance.backend.services.SimulationBot;
-import static millenniumfinance.backend.genetics.Genotype.randomizeGenotype;
 import static millenniumfinance.backend.genetics.Phenotype.randomizePhenotype;
+import static millenniumfinance.backend.utilities.BigDecimalHelpers.isGreaterThanZero;
+import static millenniumfinance.backend.utilities.BigDecimalHelpers.isLessThanZero;
 import static millenniumfinance.backend.utilities.BigDecimalHelpers.maxZeroMeansLess;
 import static millenniumfinance.backend.utilities.BigDecimalHelpers.subtract;
 
@@ -23,23 +26,39 @@ public class Generation {
   private List<Phenotype> winners;
   private Integer populationSize;
   private Integer winnerCircleSize;
-  private Integer winnerIndex;
   
   public static Generation randomizeGeneration(GeneticAlgorithmInput input) {
-    GenerationBuilder builder = builder();
+    Generation generation = new Generation();
+    generation.init(input);
     
     List<Phenotype> phenotypes = new ArrayList<>();
     for (int index = 0; index < input.getPopulationSize(); index++) {
       phenotypes.add(randomizePhenotype(input));
     }
+    generation.setPhenotypes(phenotypes);
     
-    builder.phenotypes(phenotypes)
-        .winners(new ArrayList<>())
-        .populationSize(input.getPopulationSize())
-        .winnerCircleSize(input.getWinnerCircleSize())
-        .winnerIndex(0);
-    
-    return builder.build();
+    return generation;
+  }
+  
+  public void init(GeneticAlgorithmInput input) {
+    phenotypes = new ArrayList<>();
+    winners = new ArrayList<>();
+    populationSize = input.getPopulationSize();
+    winnerCircleSize = input.getWinnerCircleSize();
+  }
+  
+  public static Generation fromPreviousGenChildren(
+      List<Phenotype> children,
+      GeneticAlgorithmInput input
+  ) {
+    Generation generation = new Generation();
+    generation.init(input);
+    List<Phenotype> phenotypes = generation.getPhenotypes();
+    phenotypes.addAll(children);
+    for (int index = 0; index < input.getPopulationSize() - children.size(); index++) {
+      phenotypes.add(randomizePhenotype(input));
+    }
+    return generation;
   }
   
   public void runSimulation(DataTable dataTable, SimulationBot simulationBot) {
@@ -52,34 +71,23 @@ public class Generation {
   }
   
   public void sortWinners() {
-    phenotypes.sort((a, b) -> {
-      double value = subtract(
-          maxZeroMeansLess(a.getReport().getUnrealizedGainLoss(), a.getReport().getRealizedGainLoss()), maxZeroMeansLess(b.getReport().getRealizedGainLoss(), b.getReport().getUnrealizedGainLoss())
-      ).doubleValue();
-      if (value > 0) {
+    phenotypes.sort((first, second) -> {
+      GainLossReport firstReport = first.getReport();
+      GainLossReport secondReport = second.getReport();
+      BigDecimal firstUGL = firstReport.getUnrealizedGainLoss();
+      BigDecimal firstRGL = firstReport.getRealizedGainLoss();
+      BigDecimal secondUGL = secondReport.getUnrealizedGainLoss();
+      BigDecimal secondRGL = secondReport.getRealizedGainLoss();
+      
+      BigDecimal remainder = subtract(maxZeroMeansLess(firstUGL, firstRGL), maxZeroMeansLess(secondUGL, secondRGL));
+      
+      if (isGreaterThanZero(remainder)) {
         return -1;
-      } else if (value < 0) {
+      } else if (isLessThanZero(remainder)) {
         return 1;
       } else {
         return 0;
       }
     });
-  }
-  
-  public void seedNew(
-      List<Phenotype> children,
-      GeneticAlgorithmInput input
-  ) {
-    phenotypes = new ArrayList<>();
-    winners = new ArrayList<>();
-    winnerCircleSize = input.getWinnerCircleSize();
-    populationSize = input.getPopulationSize();
-    winnerIndex = 0;
-    phenotypes.addAll(children);
-    for (int index = 0; index < populationSize - children.size(); index++) {
-      Phenotype current = new Phenotype();
-      current.setGenotype(randomizeGenotype(input));
-      phenotypes.add(current);
-    }
   }
 }
