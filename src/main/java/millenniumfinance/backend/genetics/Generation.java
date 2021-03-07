@@ -12,6 +12,7 @@ import millenniumfinance.backend.data.v2.structures.BotSimulationInput;
 import millenniumfinance.backend.data.v2.structures.GeneticAlgorithmInput;
 import millenniumfinance.backend.services.SimulationBot;
 import static millenniumfinance.backend.genetics.Genotype.randomizeGenotype;
+import static millenniumfinance.backend.genetics.Phenotype.randomizePhenotype;
 import static millenniumfinance.backend.utilities.BigDecimalHelpers.maxZeroMeansLess;
 import static millenniumfinance.backend.utilities.BigDecimalHelpers.subtract;
 
@@ -26,12 +27,19 @@ public class Generation {
   private Integer winnerCircleSize = 20;
   private Integer winnerIndex = 0;
   
-  public void randomize(GeneticAlgorithmInput input) {
-    for (int index = 0; index < populationSize; index++) {
-      Phenotype phenotype = new Phenotype();
-      phenotype.setGenotype(randomizeGenotype(input));
-      phenotypes.add(phenotype);
+  public static Generation randomizeGeneration(GeneticAlgorithmInput input) {
+    GenerationBuilder builder = builder();
+    
+    List<Phenotype> phenotypes = new ArrayList<>();
+    for (int index = 0; index < input.getPopulationSize(); index++) {
+      phenotypes.add(randomizePhenotype(input));
     }
+    
+    builder.phenotypes(phenotypes)
+        .populationSize(input.getPopulationSize())
+        .winnerCircleSize(input.getWinnerCircleSize());
+    
+    return builder.build();
   }
   
   public void runSimulation(DataTable dataTable, SimulationBot simulationBot) {

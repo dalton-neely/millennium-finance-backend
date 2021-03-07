@@ -7,7 +7,9 @@ import lombok.NoArgsConstructor;
 import millenniumfinance.backend.data.v1.structures.GainLossReport;
 import millenniumfinance.backend.data.v2.structures.BotSimulationInput;
 import millenniumfinance.backend.data.v2.structures.BotSimulationInput.BotSimulationInputBuilder;
+import millenniumfinance.backend.data.v2.structures.GeneticAlgorithmInput;
 import static millenniumfinance.backend.data.v2.structures.MarketParameters.crossoverMarket;
+import static millenniumfinance.backend.genetics.Genotype.randomizeGenotype;
 
 @Data
 @AllArgsConstructor
@@ -16,6 +18,10 @@ import static millenniumfinance.backend.data.v2.structures.MarketParameters.cros
 public class Phenotype {
   private Genotype genotype;
   private GainLossReport report;
+  
+  public static Phenotype randomizePhenotype(GeneticAlgorithmInput input) {
+    return new Phenotype(randomizeGenotype(input), new GainLossReport());
+  }
   
   public static Phenotype crossoverPhenotype(Phenotype mother, Phenotype father) {
     BotSimulationInput motherGene = mother.getGenotype().getGenes();
