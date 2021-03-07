@@ -10,15 +10,10 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import millenniumfinance.backend.data.v1.structures.DataTable;
 import millenniumfinance.backend.data.v2.structures.BotSimulationInput;
-import millenniumfinance.backend.data.v2.structures.BuyParameters;
 import millenniumfinance.backend.data.v2.structures.GeneticAlgorithmInput;
-import millenniumfinance.backend.data.v2.structures.MarketIndicatorsInput;
-import millenniumfinance.backend.data.v2.structures.MarketParameters;
-import millenniumfinance.backend.data.v2.structures.SellParameters;
-import millenniumfinance.backend.data.v2.structures.StopLossParameters;
-import millenniumfinance.backend.data.v2.structures.TrendParameters;
 import millenniumfinance.backend.services.SimulationBot;
 import millenniumfinance.backend.utilities.BigDecimalHelpers;
+import static millenniumfinance.backend.data.v2.structures.MarketParameters.crossoverMarket;
 import static millenniumfinance.backend.utilities.BigDecimalHelpers.fromNumber;
 import static millenniumfinance.backend.utilities.BigDecimalHelpers.isEqualTo;
 
@@ -87,62 +82,21 @@ public class Population {
     return children;
   }
   
-  private Phenotype crossover(BotSimulationInput mom, BotSimulationInput dad) {
+  private Phenotype crossover(BotSimulationInput mother, BotSimulationInput father) {
     Phenotype child = new Phenotype();
     Genotype newGenes = new Genotype();
     BotSimulationInput input = new BotSimulationInput();
-    MarketIndicatorsInput marketInput = new MarketIndicatorsInput();
-    MarketParameters bearMarketParameters = new MarketParameters();
-    MarketParameters bullMarketParameters = new MarketParameters();
-    TrendParameters bearUptrend = new TrendParameters();
-    TrendParameters bearDowntrend = new TrendParameters();
-    TrendParameters bullDowntrend = new TrendParameters();
-    TrendParameters bullUptrend = new TrendParameters();
     
-    bullDowntrend.setBuy(BuyParameters.crossover(mom.getBullMarket().getDowntrend().getBuy(), dad.getBullMarket().getDowntrend().getBuy()));
-    bullDowntrend.setSell(SellParameters.crossover(mom.getBullMarket().getDowntrend().getSell(), dad.getBullMarket().getDowntrend().getSell()));
-    bullDowntrend.setStopLoss(StopLossParameters.crossover(mom.getBullMarket().getDowntrend().getStopLoss(), dad.getBullMarket().getDowntrend().getStopLoss()));
-    
-    bullUptrend.setBuy(BuyParameters.crossover(mom.getBullMarket().getUptrend().getBuy(), dad.getBullMarket().getUptrend().getBuy()));
-    bullUptrend.setSell(SellParameters.crossover(mom.getBullMarket().getUptrend().getSell(), dad.getBullMarket().getUptrend().getSell()));
-    bullUptrend.setStopLoss(StopLossParameters.crossover(mom.getBullMarket().getUptrend().getStopLoss(), dad.getBullMarket().getUptrend().getStopLoss()));
-    
-    bullMarketParameters.setDowntrend(bullDowntrend);
-    bullMarketParameters.setUptrend(bullUptrend);
-    
-    bearUptrend.setBuy(BuyParameters.crossover(mom.getBearMarket().getUptrend().getBuy(), dad.getBearMarket().getUptrend().getBuy()));
-    bearUptrend.setSell(SellParameters.crossover(mom.getBearMarket().getUptrend().getSell(), dad.getBearMarket().getUptrend().getSell()));
-    bearUptrend.setStopLoss(StopLossParameters.crossover(mom.getBearMarket().getUptrend().getStopLoss(), dad.getBearMarket().getUptrend().getStopLoss()));
-    
-    bearDowntrend.setBuy(BuyParameters.crossover(mom.getBearMarket().getDowntrend().getBuy(), dad.getBearMarket().getDowntrend().getBuy()));
-    bearDowntrend.setSell(SellParameters.crossover(mom.getBearMarket().getDowntrend().getSell(), dad.getBearMarket().getDowntrend().getSell()));
-    bearDowntrend.setStopLoss(StopLossParameters.crossover(mom.getBearMarket().getDowntrend().getStopLoss(), dad.getBearMarket().getDowntrend().getStopLoss()));
-    
-    bearMarketParameters.setDowntrend(bearDowntrend);
-    bearMarketParameters.setUptrend(bearUptrend);
-    
-    marketInput.setRsiPeriodSize(chooseRandom(mom.getMarketIndicators().getRsiPeriodSize(), dad.getMarketIndicators().getRsiPeriodSize()));
-    marketInput.setStdsOnLowerBollingerBand(chooseRandom(mom.getMarketIndicators().getStdsOnLowerBollingerBand(), dad.getMarketIndicators().getStdsOnLowerBollingerBand()));
-    marketInput.setStdsOnUpperBollingerBand(chooseRandom(mom.getMarketIndicators().getStdsOnUpperBollingerBand(), dad.getMarketIndicators().getStdsOnUpperBollingerBand()));
-    
-    input.setBullMarket(bullMarketParameters);
-    input.setBearMarket(bearMarketParameters);
-    input.setMarketIndicators(marketInput);
-    input.setData(mom.getData());
-    input.setStarting(mom.getStarting());
+    input.setBullMarket(crossoverMarket(mother.getBullMarket(), father.getBullMarket()));
+    input.setBearMarket(crossoverMarket(mother.getBearMarket(), father.getBearMarket()));
+    input.setMarketIndicators(mother.getMarketIndicators());
+    input.setData(mother.getData());
+    input.setStarting(mother.getStarting());
     
     newGenes.setGenes(input);
     child.setGenotype(newGenes);
     
     return child;
-  }
-  
-  private <T> T chooseRandom(T a, T b) {
-    if (random.nextBoolean()) {
-      return a;
-    } else {
-      return b;
-    }
   }
   
   private BigDecimal max(BigDecimal a, BigDecimal b) {

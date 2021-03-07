@@ -39,7 +39,7 @@ public class SellParameters {
     return builder.build();
   }
   
-  public static SellParameters crossover(SellParameters mother, SellParameters father) {
+  public static SellParameters crossoverSell(SellParameters mother, SellParameters father) {
     SellParametersBuilder builder = builder();
     
     builder.amountAboveCostBasis(chooseRandom(mother.getAmountAboveCostBasis(), father.getAmountAboveCostBasis()))

@@ -32,7 +32,7 @@ public class StopLossParameters {
     return builder.build();
   }
   
-  public static StopLossParameters crossover(StopLossParameters mother, StopLossParameters father) {
+  public static StopLossParameters crossoverStopLoss(StopLossParameters mother, StopLossParameters father) {
     StopLossParametersBuilder builder = builder();
     
     builder.percentageOfLoss(chooseRandom(mother.getPercentageOfLoss(), father.getPercentageOfLoss()))

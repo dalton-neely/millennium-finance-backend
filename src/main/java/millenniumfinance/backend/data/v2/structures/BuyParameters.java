@@ -32,7 +32,7 @@ public class BuyParameters {
     return builder.build();
   }
   
-  public static BuyParameters crossover(BuyParameters mother, BuyParameters father) {
+  public static BuyParameters crossoverBuy(BuyParameters mother, BuyParameters father) {
     BuyParametersBuilder builder = builder();
     
     builder.percentageOfLowerBollingerBand(
