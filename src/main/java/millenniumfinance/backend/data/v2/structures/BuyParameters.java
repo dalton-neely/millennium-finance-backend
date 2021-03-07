@@ -5,6 +5,10 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import static millenniumfinance.backend.genetics.Randomizers.OFF_GENE;
+import static millenniumfinance.backend.genetics.Randomizers.activeRandomizer;
+import static millenniumfinance.backend.genetics.Randomizers.percentageRandomizer;
+import static millenniumfinance.backend.genetics.Randomizers.rsiRandomizer;
 
 @Data
 @NoArgsConstructor
@@ -14,4 +18,16 @@ public class BuyParameters {
   private Parameter<BigDecimal> rsiCeiling;
   private Parameter<BigDecimal> percentageOfLowerBollingerBand;
   private Parameter<BigDecimal> targetAmount;
+  
+  public static BuyParameters randomizeBuy() {
+    BuyParameters.BuyParametersBuilder builder = BuyParameters.builder();
+    Parameter<BigDecimal> percentageOfLowerBollingerBand = new Parameter<>(percentageRandomizer(), activeRandomizer());
+    Parameter<BigDecimal> rsiCeiling = new Parameter<>(rsiRandomizer(), activeRandomizer());
+    
+    builder.percentageOfLowerBollingerBand(percentageOfLowerBollingerBand)
+        .rsiCeiling(rsiCeiling)
+        .targetAmount(OFF_GENE);
+    
+    return builder.build();
+  }
 }

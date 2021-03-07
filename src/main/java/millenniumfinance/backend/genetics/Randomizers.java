@@ -2,10 +2,20 @@ package millenniumfinance.backend.genetics;
 
 import java.math.BigDecimal;
 import java.util.Random;
+import millenniumfinance.backend.data.v2.structures.Parameter;
 import static millenniumfinance.backend.utilities.BigDecimalHelpers.fromNumber;
 
 public final class Randomizers {
+  public static final Parameter<BigDecimal> OFF_GENE = new Parameter<>(null, false);
   private static final Random random = new Random();
+  
+  public static Integer periodRandomizer(Integer min, Integer max) {
+    return random.nextInt(min) + (max - min);
+  }
+  
+  public static BigDecimal stdRandomizer(Integer max) {
+    return fromNumber(random.nextDouble() * (random.nextInt(max - 1) + 1));
+  }
   
   public static BigDecimal percentageRandomizer() {
     // Values from 50% to 150%

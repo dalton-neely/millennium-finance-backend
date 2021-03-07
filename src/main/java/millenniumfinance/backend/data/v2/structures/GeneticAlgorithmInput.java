@@ -4,7 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import millenniumfinance.backend.data.v1.structures.CalculateDataInput;
 
 @Data
 @NoArgsConstructor
@@ -13,5 +12,5 @@ import millenniumfinance.backend.data.v1.structures.CalculateDataInput;
 public class GeneticAlgorithmInput {
   private Integer generationSize;
   private Integer populationSize;
-  private CalculateDataInput dataFetchParameters;
+  private DataInput dataFetchParameters;
 }

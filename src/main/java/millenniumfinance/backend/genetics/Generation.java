@@ -10,8 +10,10 @@ import lombok.NoArgsConstructor;
 import millenniumfinance.backend.data.v1.structures.DataTable;
 import millenniumfinance.backend.data.v1.structures.GainLossReport;
 import millenniumfinance.backend.data.v2.structures.BotSimulationInput;
+import millenniumfinance.backend.data.v2.structures.DataInput;
 import millenniumfinance.backend.services.SimulationBot;
 import millenniumfinance.backend.utilities.BigDecimalHelpers;
+import static millenniumfinance.backend.genetics.Genotype.randomizeGenotype;
 import static millenniumfinance.backend.utilities.BigDecimalHelpers.fromNumber;
 import static millenniumfinance.backend.utilities.BigDecimalHelpers.isEqualTo;
 import static millenniumfinance.backend.utilities.BigDecimalHelpers.subtract;
@@ -27,11 +29,19 @@ public class Generation {
   private Integer winnerCircleSize = 20;
   private Integer winnerIndex = 0;
   
-  public void randomize() {
+  public void randomize(
+      DataInput input,
+      Double maxAmountAboveCostBasis,
+      Double maxAmountBelowCostBasis,
+      Integer maxStdLowerBollingerBand,
+      Integer minStdUpperBollingerBand,
+      Integer minPeriod,
+      Integer maxPeriod,
+      Double startingBalance
+  ) {
     for (int index = 0; index < populationSize; index++) {
       Phenotype phenotype = new Phenotype();
-      phenotype.setGenotype(new Genotype());
-      phenotype.getGenotype().randomize();
+      phenotype.setGenotype(randomizeGenotype(input, maxAmountAboveCostBasis, maxAmountBelowCostBasis, maxStdLowerBollingerBand, minStdUpperBollingerBand, minPeriod, maxPeriod, startingBalance));
       phenotypes.add(phenotype);
     }
   }
@@ -80,12 +90,21 @@ public class Generation {
     }
   }
   
-  public void seedNew(List<Phenotype> children) {
+  public void seedNew(
+      List<Phenotype> children,
+      DataInput input,
+      Double maxAmountAboveCostBasis,
+      Double maxAmountBelowCostBasis,
+      Integer maxStdLowerBollingerBand,
+      Integer minStdUpperBollingerBand,
+      Integer minPeriod,
+      Integer maxPeriod,
+      Double startingBalance
+  ) {
     phenotypes.addAll(children);
     for (int index = 0; index < populationSize - children.size(); index++) {
       Phenotype current = new Phenotype();
-      current.setGenotype(new Genotype());
-      current.getGenotype().randomize();
+      current.setGenotype(randomizeGenotype(input, maxAmountAboveCostBasis, maxAmountBelowCostBasis, maxStdLowerBollingerBand, minStdUpperBollingerBand, minPeriod, maxPeriod, startingBalance));
       phenotypes.add(current);
     }
   }

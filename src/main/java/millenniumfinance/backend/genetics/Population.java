@@ -9,15 +9,14 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import millenniumfinance.backend.data.v1.structures.DataTable;
-import millenniumfinance.backend.data.v2.structures.BearMarketParameters;
 import millenniumfinance.backend.data.v2.structures.BotSimulationInput;
-import millenniumfinance.backend.data.v2.structures.BullMarketParameters;
 import millenniumfinance.backend.data.v2.structures.BuyParameters;
-import millenniumfinance.backend.data.v2.structures.DowntrendParameters;
+import millenniumfinance.backend.data.v2.structures.DataInput;
 import millenniumfinance.backend.data.v2.structures.MarketIndicatorsInput;
+import millenniumfinance.backend.data.v2.structures.MarketParameters;
 import millenniumfinance.backend.data.v2.structures.SellParameters;
 import millenniumfinance.backend.data.v2.structures.StopLossParameters;
-import millenniumfinance.backend.data.v2.structures.UptrendParameters;
+import millenniumfinance.backend.data.v2.structures.TrendParameters;
 import millenniumfinance.backend.services.SimulationBot;
 import millenniumfinance.backend.utilities.BigDecimalHelpers;
 import static millenniumfinance.backend.utilities.BigDecimalHelpers.fromNumber;
@@ -47,8 +46,28 @@ public class Population {
     System.out.println(generations.size());
   }
   
-  public void runAllGenerations(Integer populationSize) {
-    initialGeneration(populationSize);
+  public void runAllGenerations(
+      Integer populationSize,
+      DataInput input,
+      Double maxAmountAboveCostBasis,
+      Double maxAmountBelowCostBasis,
+      Integer maxStdLowerBollingerBand,
+      Integer minStdUpperBollingerBand,
+      Integer minPeriod,
+      Integer maxPeriod,
+      Double startingBalance
+  ) {
+    initialGeneration(
+        populationSize,
+        input,
+        maxAmountAboveCostBasis,
+        maxAmountBelowCostBasis,
+        maxStdLowerBollingerBand,
+        minStdUpperBollingerBand,
+        minPeriod,
+        maxPeriod,
+        startingBalance
+    );
     for (int index = 0; index < generationSize - 1; index++) {
       System.out.println("running generation: " + index);
       Generation current = generations.get(index);
@@ -59,17 +78,46 @@ public class Population {
       System.out.println("made " + children.size() + " children");
       Generation nextGeneration = new Generation();
       nextGeneration.setPopulationSize(populationSize);
-      nextGeneration.seedNew(children);
+      nextGeneration.seedNew(
+          children,
+          input,
+          maxAmountAboveCostBasis,
+          maxAmountBelowCostBasis,
+          maxStdLowerBollingerBand,
+          minStdUpperBollingerBand,
+          minPeriod,
+          maxPeriod,
+          startingBalance
+      );
       generations.add(nextGeneration);
     }
     System.out.println("finished");
     System.out.println(generations.get(generations.size() - 2).getWinners().get(0).getReport().toString());
   }
   
-  public void initialGeneration(Integer populationSize) {
+  public void initialGeneration(
+      Integer populationSize,
+      DataInput input,
+      Double maxAmountAboveCostBasis,
+      Double maxAmountBelowCostBasis,
+      Integer maxStdLowerBollingerBand,
+      Integer minStdUpperBollingerBand,
+      Integer minPeriod,
+      Integer maxPeriod,
+      Double startingBalance
+  ) {
     Generation generation = new Generation();
     generation.setPopulationSize(populationSize);
-    generation.randomize();
+    generation.randomize(
+        input,
+        maxAmountAboveCostBasis,
+        maxAmountBelowCostBasis,
+        maxStdLowerBollingerBand,
+        minStdUpperBollingerBand,
+        minPeriod,
+        maxPeriod,
+        startingBalance
+    );
     generations.add(generation);
   }
   
@@ -93,12 +141,12 @@ public class Population {
     Genotype newGenes = new Genotype();
     BotSimulationInput input = new BotSimulationInput();
     MarketIndicatorsInput marketInput = new MarketIndicatorsInput();
-    BearMarketParameters bearMarketParameters = new BearMarketParameters();
-    UptrendParameters bearUptrend = new UptrendParameters();
-    DowntrendParameters bearDowntrend = new DowntrendParameters();
-    BullMarketParameters bullMarketParameters = new BullMarketParameters();
-    DowntrendParameters bullDowntrend = new DowntrendParameters();
-    UptrendParameters bullUptrend = new UptrendParameters();
+    MarketParameters bearMarketParameters = new MarketParameters();
+    MarketParameters bullMarketParameters = new MarketParameters();
+    TrendParameters bearUptrend = new TrendParameters();
+    TrendParameters bearDowntrend = new TrendParameters();
+    TrendParameters bullDowntrend = new TrendParameters();
+    TrendParameters bullUptrend = new TrendParameters();
     
     bullDowntrend.setBuy(crossover(mom.getBullMarket().getDowntrend().getBuy(), dad.getBullMarket().getDowntrend().getBuy()));
     bullDowntrend.setSell(crossover(mom.getBullMarket().getDowntrend().getSell(), dad.getBullMarket().getDowntrend().getSell()));

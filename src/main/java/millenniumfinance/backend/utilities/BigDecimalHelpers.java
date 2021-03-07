@@ -74,6 +74,14 @@ public final class BigDecimalHelpers {
     return bigDecimal.compareTo(compareValue) > 0;
   }
   
+  public static boolean isGreaterThanOrEqualTo(BigDecimal bigDecimal, BigDecimal compareValue) {
+    return bigDecimal.compareTo(compareValue) >= 0;
+  }
+  
+  public static boolean isLessThanOrEqualTo(BigDecimal bigDecimal, BigDecimal compareValue) {
+    return bigDecimal.compareTo(compareValue) <= 0;
+  }
+  
   public static boolean isLessThan(BigDecimal bigDecimal, BigDecimal compareValue) {
     return bigDecimal.compareTo(compareValue) < 0;
   }

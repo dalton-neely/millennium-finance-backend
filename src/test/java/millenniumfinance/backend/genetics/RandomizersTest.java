@@ -4,10 +4,14 @@ import java.math.BigDecimal;
 import org.junit.jupiter.api.RepeatedTest;
 import static millenniumfinance.backend.genetics.Randomizers.amountRandomizer;
 import static millenniumfinance.backend.genetics.Randomizers.percentageRandomizer;
+import static millenniumfinance.backend.genetics.Randomizers.periodRandomizer;
 import static millenniumfinance.backend.genetics.Randomizers.rsiRandomizer;
+import static millenniumfinance.backend.genetics.Randomizers.stdRandomizer;
 import static millenniumfinance.backend.utilities.BigDecimalHelpers.fromNumber;
 import static millenniumfinance.backend.utilities.BigDecimalHelpers.isGreaterThan;
+import static millenniumfinance.backend.utilities.BigDecimalHelpers.isGreaterThanOrEqualTo;
 import static millenniumfinance.backend.utilities.BigDecimalHelpers.isLessThan;
+import static millenniumfinance.backend.utilities.BigDecimalHelpers.isLessThanOrEqualTo;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class RandomizersTest {
@@ -35,5 +39,24 @@ class RandomizersTest {
     
     assertTrue(isGreaterThan(actual, fromNumber(0)));
     assertTrue(isLessThan(actual, fromNumber(maxAmount)));
+  }
+  
+  @RepeatedTest(value = 1000)
+  void testPeriodRandomizer() {
+    Integer min = 5;
+    Integer max = 20;
+    Integer actual = periodRandomizer(min, max);
+    
+    assertTrue(actual < max);
+    assertTrue(actual > min);
+  }
+  
+  @RepeatedTest(value = 1000)
+  void testStdRandomizer() {
+    Integer max = 5;
+    BigDecimal actual = stdRandomizer(max);
+    
+    assertTrue(isLessThanOrEqualTo(actual, fromNumber(max)));
+    assertTrue(isGreaterThanOrEqualTo(actual, fromNumber(0)));
   }
 }

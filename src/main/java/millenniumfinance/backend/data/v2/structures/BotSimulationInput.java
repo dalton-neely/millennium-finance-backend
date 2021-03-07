@@ -11,8 +11,8 @@ import lombok.NoArgsConstructor;
 @Builder
 public class BotSimulationInput {
   private MarketIndicatorsInput marketIndicators;
-  private BearMarketParameters bearMarket;
-  private BullMarketParameters bullMarket;
+  private MarketParameters bearMarket;
+  private MarketParameters bullMarket;
   private DataInput data;
   private StartingParameters starting;
 }
