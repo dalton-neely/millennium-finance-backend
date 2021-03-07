@@ -1,6 +1,5 @@
 package millenniumfinance.backend.genetics;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -11,10 +10,7 @@ import lombok.NoArgsConstructor;
 import millenniumfinance.backend.data.v1.structures.DataTable;
 import millenniumfinance.backend.data.v2.structures.GeneticAlgorithmInput;
 import millenniumfinance.backend.services.SimulationBot;
-import millenniumfinance.backend.utilities.BigDecimalHelpers;
 import static millenniumfinance.backend.genetics.Phenotype.crossoverPhenotype;
-import static millenniumfinance.backend.utilities.BigDecimalHelpers.fromNumber;
-import static millenniumfinance.backend.utilities.BigDecimalHelpers.isEqualTo;
 
 @Data
 @NoArgsConstructor
@@ -70,7 +66,6 @@ public class Population {
     System.out.println("starting crossover");
     List<Phenotype> children = new ArrayList<>();
     int size = 20;
-    
     for (int index = 0; index < size; index += 2) {
       System.out.println("crossing parent " + index + " with parent " + index + 1);
       Phenotype current = winners.get(index);
@@ -79,19 +74,5 @@ public class Population {
     }
     
     return children;
-  }
-  
-  private BigDecimal max(BigDecimal a, BigDecimal b) {
-    if (isEqualTo(a, fromNumber(0))) {
-      return b;
-    }
-    if (isEqualTo(b, fromNumber(0))) {
-      return a;
-    }
-    if (BigDecimalHelpers.isGreaterThan(a, b)) {
-      return a;
-    } else {
-      return b;
-    }
   }
 }

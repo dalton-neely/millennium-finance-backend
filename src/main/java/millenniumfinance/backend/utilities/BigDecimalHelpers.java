@@ -70,10 +70,6 @@ public final class BigDecimalHelpers {
     return bigDecimal.compareTo(ZERO) == 0;
   }
   
-  public static boolean isGreaterThan(BigDecimal bigDecimal, BigDecimal compareValue) {
-    return bigDecimal.compareTo(compareValue) > 0;
-  }
-  
   public static boolean isGreaterThanOrEqualTo(BigDecimal bigDecimal, BigDecimal compareValue) {
     return bigDecimal.compareTo(compareValue) >= 0;
   }
@@ -86,7 +82,25 @@ public final class BigDecimalHelpers {
     return bigDecimal.compareTo(compareValue) < 0;
   }
   
+  public static BigDecimal maxZeroMeansLess(BigDecimal a, BigDecimal b) {
+    if (isEqualTo(a, ZEROS)) {
+      return b;
+    } else if (isEqualTo(b, ZEROS)) {
+      return a;
+    } else {
+      if (BigDecimalHelpers.isGreaterThan(a, b)) {
+        return a;
+      } else {
+        return b;
+      }
+    }
+  }
+  
   public static boolean isEqualTo(BigDecimal bigDecimal, BigDecimal compareValue) {
     return bigDecimal.compareTo(compareValue) == 0;
+  }
+  
+  public static boolean isGreaterThan(BigDecimal bigDecimal, BigDecimal compareValue) {
+    return bigDecimal.compareTo(compareValue) > 0;
   }
 }

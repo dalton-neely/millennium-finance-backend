@@ -30,18 +30,7 @@ public class NaturalSelectionService {
     population.setGenerationSize(input.getGenerationSize());
     population.loadDataInput(fromBinanceApiString(client.getCandlestickData(input.getDataFetchParameters())));
     population.loadBot(bot);
-//    population.initialGeneration();
     population.runAllGenerations(input);
-
-//    population.getGenerations().get(0).runSimulation(dataTable, bot);
-
-//    Genotype genotype = new Genotype();
-//    genotype.randomize();
-
-//    System.out.println(population.getGenerations().get(0).getWinners().stream().map(winner -> max(winner.getReport().getRealizedGainLoss(), winner.getReport().getUnrealizedGainLoss())).collect(Collectors.toList()));
-
-//    builder.winningGenes()
-//        .winningStats(population.getGenerations().get(0).getReports().get(population.getGenerations().get(0).getWinnerIndex()));
     
     return builder.build();
   }

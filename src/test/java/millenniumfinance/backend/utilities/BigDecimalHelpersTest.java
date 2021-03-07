@@ -21,6 +21,7 @@ import static millenniumfinance.backend.utilities.BigDecimalHelpers.isGreaterTha
 import static millenniumfinance.backend.utilities.BigDecimalHelpers.isLessThan;
 import static millenniumfinance.backend.utilities.BigDecimalHelpers.isLessThanOrEqualTo;
 import static millenniumfinance.backend.utilities.BigDecimalHelpers.isLessThanZero;
+import static millenniumfinance.backend.utilities.BigDecimalHelpers.maxZeroMeansLess;
 import static millenniumfinance.backend.utilities.BigDecimalHelpers.multiply;
 import static millenniumfinance.backend.utilities.BigDecimalHelpers.subtract;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -132,5 +133,15 @@ class BigDecimalHelpersTest {
     assertEquals("1.0000000000", ONES.toString());
     assertEquals("10.0000000000", TENS.toString());
     assertEquals("100.0000000000", ONE_HUNDREDS.toString());
+  }
+  
+  @Test
+  public void testMaxZeroMeansLess() {
+    assertEquals(TEN, maxZeroMeansLess(TEN, ZERO));
+    assertEquals(TEN, maxZeroMeansLess(ZERO, TEN));
+    assertFalse(isEqualTo(ZERO, maxZeroMeansLess(ZERO, fromNumber(-1))));
+    assertFalse(isEqualTo(ZERO, maxZeroMeansLess(fromNumber(-1), ZERO)));
+    assertTrue(isEqualTo(fromNumber(-1), maxZeroMeansLess(fromNumber(-1), ZERO)));
+    assertTrue(isEqualTo(fromNumber(-1), maxZeroMeansLess(ZERO, fromNumber(-1))));
   }
 }

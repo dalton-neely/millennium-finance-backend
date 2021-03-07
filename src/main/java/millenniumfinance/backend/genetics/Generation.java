@@ -1,6 +1,5 @@
 package millenniumfinance.backend.genetics;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.AllArgsConstructor;
@@ -12,10 +11,8 @@ import millenniumfinance.backend.data.v1.structures.GainLossReport;
 import millenniumfinance.backend.data.v2.structures.BotSimulationInput;
 import millenniumfinance.backend.data.v2.structures.GeneticAlgorithmInput;
 import millenniumfinance.backend.services.SimulationBot;
-import millenniumfinance.backend.utilities.BigDecimalHelpers;
 import static millenniumfinance.backend.genetics.Genotype.randomizeGenotype;
-import static millenniumfinance.backend.utilities.BigDecimalHelpers.fromNumber;
-import static millenniumfinance.backend.utilities.BigDecimalHelpers.isEqualTo;
+import static millenniumfinance.backend.utilities.BigDecimalHelpers.maxZeroMeansLess;
 import static millenniumfinance.backend.utilities.BigDecimalHelpers.subtract;
 
 @Data
@@ -55,7 +52,7 @@ public class Generation {
   public void sortWinners() {
     phenotypes.sort((a, b) -> {
       double value = subtract(
-          max(a.getReport().getUnrealizedGainLoss(), a.getReport().getRealizedGainLoss()), max(b.getReport().getRealizedGainLoss(), b.getReport().getUnrealizedGainLoss())
+          maxZeroMeansLess(a.getReport().getUnrealizedGainLoss(), a.getReport().getRealizedGainLoss()), maxZeroMeansLess(b.getReport().getRealizedGainLoss(), b.getReport().getUnrealizedGainLoss())
       ).doubleValue();
       if (value > 0) {
         return -1;
@@ -65,20 +62,6 @@ public class Generation {
         return 0;
       }
     });
-  }
-  
-  private BigDecimal max(BigDecimal a, BigDecimal b) {
-    if (isEqualTo(a, fromNumber(0))) {
-      return b;
-    }
-    if (isEqualTo(b, fromNumber(0))) {
-      return a;
-    }
-    if (BigDecimalHelpers.isGreaterThan(a, b)) {
-      return a;
-    } else {
-      return b;
-    }
   }
   
   public void seedNew(
