@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 import millenniumfinance.backend.data.v1.structures.DataTable;
 import millenniumfinance.backend.data.v2.structures.BotSimulationInput;
 import millenniumfinance.backend.data.v2.structures.BuyParameters;
-import millenniumfinance.backend.data.v2.structures.DataInput;
+import millenniumfinance.backend.data.v2.structures.GeneticAlgorithmInput;
 import millenniumfinance.backend.data.v2.structures.MarketIndicatorsInput;
 import millenniumfinance.backend.data.v2.structures.MarketParameters;
 import millenniumfinance.backend.data.v2.structures.SellParameters;
@@ -46,28 +46,8 @@ public class Population {
     System.out.println(generations.size());
   }
   
-  public void runAllGenerations(
-      Integer populationSize,
-      DataInput input,
-      Double maxAmountAboveCostBasis,
-      Double maxAmountBelowCostBasis,
-      Integer maxStdLowerBollingerBand,
-      Integer minStdUpperBollingerBand,
-      Integer minPeriod,
-      Integer maxPeriod,
-      Double startingBalance
-  ) {
-    initialGeneration(
-        populationSize,
-        input,
-        maxAmountAboveCostBasis,
-        maxAmountBelowCostBasis,
-        maxStdLowerBollingerBand,
-        minStdUpperBollingerBand,
-        minPeriod,
-        maxPeriod,
-        startingBalance
-    );
+  public void runAllGenerations(GeneticAlgorithmInput input) {
+    initialGeneration(input);
     for (int index = 0; index < generationSize - 1; index++) {
       System.out.println("running generation: " + index);
       Generation current = generations.get(index);
@@ -77,47 +57,18 @@ public class Population {
       List<Phenotype> children = crossover(winners);
       System.out.println("made " + children.size() + " children");
       Generation nextGeneration = new Generation();
-      nextGeneration.setPopulationSize(populationSize);
-      nextGeneration.seedNew(
-          children,
-          input,
-          maxAmountAboveCostBasis,
-          maxAmountBelowCostBasis,
-          maxStdLowerBollingerBand,
-          minStdUpperBollingerBand,
-          minPeriod,
-          maxPeriod,
-          startingBalance
-      );
+      nextGeneration.setPopulationSize(input.getPopulationSize());
+      nextGeneration.seedNew(children, input);
       generations.add(nextGeneration);
     }
     System.out.println("finished");
     System.out.println(generations.get(generations.size() - 2).getWinners().get(0).getReport().toString());
   }
   
-  public void initialGeneration(
-      Integer populationSize,
-      DataInput input,
-      Double maxAmountAboveCostBasis,
-      Double maxAmountBelowCostBasis,
-      Integer maxStdLowerBollingerBand,
-      Integer minStdUpperBollingerBand,
-      Integer minPeriod,
-      Integer maxPeriod,
-      Double startingBalance
-  ) {
+  public void initialGeneration(GeneticAlgorithmInput input) {
     Generation generation = new Generation();
-    generation.setPopulationSize(populationSize);
-    generation.randomize(
-        input,
-        maxAmountAboveCostBasis,
-        maxAmountBelowCostBasis,
-        maxStdLowerBollingerBand,
-        minStdUpperBollingerBand,
-        minPeriod,
-        maxPeriod,
-        startingBalance
-    );
+    generation.setPopulationSize(input.getPopulationSize());
+    generation.randomize(input);
     generations.add(generation);
   }
   

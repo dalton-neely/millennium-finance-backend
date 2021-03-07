@@ -6,11 +6,10 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import millenniumfinance.backend.data.v2.structures.BotSimulationInput;
 import millenniumfinance.backend.data.v2.structures.BotSimulationInput.BotSimulationInputBuilder;
-import millenniumfinance.backend.data.v2.structures.DataInput;
+import millenniumfinance.backend.data.v2.structures.GeneticAlgorithmInput;
 import millenniumfinance.backend.data.v2.structures.MarketIndicatorsInput;
-import millenniumfinance.backend.data.v2.structures.MarketIndicatorsInput.MarketIndicatorsInputBuilder;
+import millenniumfinance.backend.data.v2.structures.RandomizeContext;
 import millenniumfinance.backend.data.v2.structures.StartingParameters;
-import millenniumfinance.backend.data.v2.structures.StartingParameters.StartingParametersBuilder;
 import static millenniumfinance.backend.data.v2.structures.MarketParameters.randomizeMarketParameters;
 import static millenniumfinance.backend.utilities.BigDecimalHelpers.fromNumber;
 
@@ -21,25 +20,15 @@ import static millenniumfinance.backend.utilities.BigDecimalHelpers.fromNumber;
 public class Genotype {
   private BotSimulationInput genes;
   
-  public static Genotype randomizeGenotype(
-      DataInput input,
-      Double maxAmountAboveCostBasis,
-      Double maxAmountBelowCostBasis,
-      Integer maxStdLowerBollingerBand,
-      Integer minStdUpperBollingerBand,
-      Integer minPeriod,
-      Integer maxPeriod,
-      Double startingBalance
-  ) {
+  public static Genotype randomizeGenotype(GeneticAlgorithmInput input) {
     BotSimulationInputBuilder builder = BotSimulationInput.builder();
-    MarketIndicatorsInputBuilder marketBuilder = MarketIndicatorsInput.builder();
-    StartingParametersBuilder startingBuilder = StartingParameters.builder();
+    RandomizeContext context = input.getRandomizeContext();
+    Double maxAmountAboveCostBasis = context.getMaxAmountAboveCostBasis();
+    Double maxAmountBelowCostBasis = context.getMaxAmountBelowCostBasis();
     
-    startingBuilder.startingBalance(fromNumber(startingBalance));
-    
-    builder.marketIndicators(marketBuilder.build())
-        .starting(startingBuilder.build())
-        .data(input)
+    builder.marketIndicators(new MarketIndicatorsInput())
+        .starting(new StartingParameters(fromNumber(input.getStartingBalance())))
+        .data(input.getDataFetchParameters())
         .bearMarket(randomizeMarketParameters(maxAmountAboveCostBasis, maxAmountBelowCostBasis))
         .bullMarket(randomizeMarketParameters(maxAmountAboveCostBasis, maxAmountBelowCostBasis));
     

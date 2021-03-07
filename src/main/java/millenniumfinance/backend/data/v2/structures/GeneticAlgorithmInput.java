@@ -12,5 +12,7 @@ import lombok.NoArgsConstructor;
 public class GeneticAlgorithmInput {
   private Integer generationSize;
   private Integer populationSize;
+  private Double startingBalance;
+  private RandomizeContext randomizeContext;
   private DataInput dataFetchParameters;
 }

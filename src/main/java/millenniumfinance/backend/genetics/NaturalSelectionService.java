@@ -31,17 +31,7 @@ public class NaturalSelectionService {
     population.loadDataInput(fromBinanceApiString(client.getCandlestickData(input.getDataFetchParameters())));
     population.loadBot(bot);
 //    population.initialGeneration();
-    population.runAllGenerations(
-        input.getPopulationSize(),
-        input.getDataFetchParameters(),
-        50.00,
-        50.00,
-        5,
-        5,
-        6,
-        15,
-        3000.00
-    );
+    population.runAllGenerations(input);
 
 //    population.getGenerations().get(0).runSimulation(dataTable, bot);
 
