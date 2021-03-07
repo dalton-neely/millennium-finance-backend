@@ -40,7 +40,7 @@ public class NaturalSelectionService {
         .winningGenes(winner.getGenotype().getGenes())
         .timeRun((endTime - startTime) / 1_000_000_000)
         .gainLossPercentage(maxZeroMeansLess(winner.getReport().getRealizedGainLoss(), winner.getReport().getUnrealizedGainLoss()))
-        .amountGainLoss(subtract(fromNumber(input.getStartingBalance()), winner.getReport().getPortfolioMarketValue()))
+        .amountGainLoss(subtract(winner.getReport().getPortfolioMarketValue(), fromNumber(input.getStartingBalance())))
         .build();
   }
 }
