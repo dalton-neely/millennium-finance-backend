@@ -18,6 +18,10 @@ import millenniumfinance.backend.data.v2.structures.StartingParameters;
 import millenniumfinance.backend.data.v2.structures.StopLossParameters;
 import millenniumfinance.backend.data.v2.structures.UptrendParameters;
 import static java.math.BigDecimal.ZERO;
+import static millenniumfinance.backend.genetics.Randomizers.activeRandomizer;
+import static millenniumfinance.backend.genetics.Randomizers.amountRandomizer;
+import static millenniumfinance.backend.genetics.Randomizers.percentageRandomizer;
+import static millenniumfinance.backend.genetics.Randomizers.rsiRandomizer;
 import static millenniumfinance.backend.utilities.BigDecimalHelpers.fromNumber;
 
 @Data
@@ -104,7 +108,7 @@ public class Genotype {
     SellParameters.SellParametersBuilder builder = SellParameters.builder();
     
     builder
-        .amountAboveCostBasis(new Parameter<>(amountRandomizer(), activeRandomizer()))
+        .amountAboveCostBasis(new Parameter<>(amountRandomizer(50.00), activeRandomizer()))
         .percentageGain(new Parameter<>(percentageRandomizer(), activeRandomizer()))
         .rsiFloor(new Parameter<>(rsiRandomizer(), activeRandomizer()))
         .percentageOfUpperBollingerBand(new Parameter<>(percentageRandomizer(), activeRandomizer()))
@@ -118,25 +122,9 @@ public class Genotype {
     
     builder
         .percentageOfLoss(new Parameter<>(percentageRandomizer(), activeRandomizer()))
-        .amountBelowCostBasis(new Parameter<>(amountRandomizer(), activeRandomizer()))
+        .amountBelowCostBasis(new Parameter<>(amountRandomizer(50.00), activeRandomizer()))
         .targetAssetPrice(new Parameter<>(ZERO, false));
     
     return builder.build();
-  }
-  
-  private BigDecimal percentageRandomizer() {
-    return fromNumber(random.nextDouble() * 1.5);
-  }
-  
-  private Boolean activeRandomizer() {
-    return random.nextBoolean();
-  }
-  
-  private BigDecimal rsiRandomizer() {
-    return fromNumber(random.nextDouble() * 100);
-  }
-  
-  private BigDecimal amountRandomizer() {
-    return fromNumber(random.nextDouble() * 100);
   }
 }
