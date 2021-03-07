@@ -31,6 +31,7 @@ public class Population {
   private SimulationBot bot;
   
   public void runAllGenerations(GeneticAlgorithmInput input) {
+    long startTime = System.nanoTime();
     generations = new ArrayList<>();
     generations.add(randomizeGeneration(input));
     for (int index = 0; index < generationSize; index++) {
@@ -42,11 +43,13 @@ public class Population {
       
       generations.add(fromPreviousGenChildren(crossover(current.getWinners(), input.getWinnerCircleSize()), input));
     }
+    long endTime = System.nanoTime();
     System.out.println("finished");
-    GainLossReport winner = generations.get(generationSize - 1).getWinners().get(0).getReport();
+    GainLossReport winner = getTheWinner().getReport();
     BigDecimal totalGainLoss = subtract(winner.getPortfolioMarketValue(), fromNumber(input.getStartingBalance()));
     System.out.println("UGL/RGL: " + maxZeroMeansLess(winner.getUnrealizedGainLoss(), winner.getRealizedGainLoss()));
     System.out.println("Total Gain Loss: " + formatTwoPlaces(totalGainLoss));
+    System.out.println("Total Time Run: " + ((endTime - startTime) / 1_000_000_000) + " seconds");
   }
   
   public List<Phenotype> crossover(List<Phenotype> winners, Integer winnerCircleSize) {
@@ -55,5 +58,9 @@ public class Population {
       children.add(crossoverPhenotype(winners.get(index), winners.get(index + 1)));
     }
     return children;
+  }
+  
+  public Phenotype getTheWinner() {
+    return generations.get(generationSize - 1).getWinners().get(0);
   }
 }
