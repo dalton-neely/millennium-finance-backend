@@ -28,6 +28,6 @@ public class Phenotype {
         .bullMarket(crossoverMarket(motherGene.getBullMarket(), fatherGene.getBullMarket()))
         .bearMarket(crossoverMarket(motherGene.getBearMarket(), motherGene.getBearMarket()));
     
-    return new Phenotype(new Genotype(), new GainLossReport());
+    return new Phenotype(new Genotype(builder.build()), new GainLossReport());
   }
 }
