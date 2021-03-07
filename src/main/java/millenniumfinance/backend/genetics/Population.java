@@ -99,24 +99,24 @@ public class Population {
     TrendParameters bullDowntrend = new TrendParameters();
     TrendParameters bullUptrend = new TrendParameters();
     
-    bullDowntrend.setBuy(crossover(mom.getBullMarket().getDowntrend().getBuy(), dad.getBullMarket().getDowntrend().getBuy()));
-    bullDowntrend.setSell(crossover(mom.getBullMarket().getDowntrend().getSell(), dad.getBullMarket().getDowntrend().getSell()));
-    bullDowntrend.setStopLoss(crossover(mom.getBullMarket().getDowntrend().getStopLoss(), dad.getBullMarket().getDowntrend().getStopLoss()));
+    bullDowntrend.setBuy(BuyParameters.crossover(mom.getBullMarket().getDowntrend().getBuy(), dad.getBullMarket().getDowntrend().getBuy()));
+    bullDowntrend.setSell(SellParameters.crossover(mom.getBullMarket().getDowntrend().getSell(), dad.getBullMarket().getDowntrend().getSell()));
+    bullDowntrend.setStopLoss(StopLossParameters.crossover(mom.getBullMarket().getDowntrend().getStopLoss(), dad.getBullMarket().getDowntrend().getStopLoss()));
     
-    bullUptrend.setBuy(crossover(mom.getBullMarket().getUptrend().getBuy(), dad.getBullMarket().getUptrend().getBuy()));
-    bullUptrend.setSell(crossover(mom.getBullMarket().getUptrend().getSell(), dad.getBullMarket().getUptrend().getSell()));
-    bullUptrend.setStopLoss(crossover(mom.getBullMarket().getUptrend().getStopLoss(), dad.getBullMarket().getUptrend().getStopLoss()));
+    bullUptrend.setBuy(BuyParameters.crossover(mom.getBullMarket().getUptrend().getBuy(), dad.getBullMarket().getUptrend().getBuy()));
+    bullUptrend.setSell(SellParameters.crossover(mom.getBullMarket().getUptrend().getSell(), dad.getBullMarket().getUptrend().getSell()));
+    bullUptrend.setStopLoss(StopLossParameters.crossover(mom.getBullMarket().getUptrend().getStopLoss(), dad.getBullMarket().getUptrend().getStopLoss()));
     
     bullMarketParameters.setDowntrend(bullDowntrend);
     bullMarketParameters.setUptrend(bullUptrend);
     
-    bearUptrend.setBuy(crossover(mom.getBearMarket().getUptrend().getBuy(), dad.getBearMarket().getUptrend().getBuy()));
-    bearUptrend.setSell(crossover(mom.getBearMarket().getUptrend().getSell(), dad.getBearMarket().getUptrend().getSell()));
-    bearUptrend.setStopLoss(crossover(mom.getBearMarket().getUptrend().getStopLoss(), dad.getBearMarket().getUptrend().getStopLoss()));
+    bearUptrend.setBuy(BuyParameters.crossover(mom.getBearMarket().getUptrend().getBuy(), dad.getBearMarket().getUptrend().getBuy()));
+    bearUptrend.setSell(SellParameters.crossover(mom.getBearMarket().getUptrend().getSell(), dad.getBearMarket().getUptrend().getSell()));
+    bearUptrend.setStopLoss(StopLossParameters.crossover(mom.getBearMarket().getUptrend().getStopLoss(), dad.getBearMarket().getUptrend().getStopLoss()));
     
-    bearDowntrend.setBuy(crossover(mom.getBearMarket().getDowntrend().getBuy(), dad.getBearMarket().getDowntrend().getBuy()));
-    bearDowntrend.setSell(crossover(mom.getBearMarket().getDowntrend().getSell(), dad.getBearMarket().getDowntrend().getSell()));
-    bearDowntrend.setStopLoss(crossover(mom.getBearMarket().getDowntrend().getStopLoss(), dad.getBearMarket().getDowntrend().getStopLoss()));
+    bearDowntrend.setBuy(BuyParameters.crossover(mom.getBearMarket().getDowntrend().getBuy(), dad.getBearMarket().getDowntrend().getBuy()));
+    bearDowntrend.setSell(SellParameters.crossover(mom.getBearMarket().getDowntrend().getSell(), dad.getBearMarket().getDowntrend().getSell()));
+    bearDowntrend.setStopLoss(StopLossParameters.crossover(mom.getBearMarket().getDowntrend().getStopLoss(), dad.getBearMarket().getDowntrend().getStopLoss()));
     
     bearMarketParameters.setDowntrend(bearDowntrend);
     bearMarketParameters.setUptrend(bearUptrend);
@@ -133,38 +133,6 @@ public class Population {
     
     newGenes.setGenes(input);
     child.setGenotype(newGenes);
-    
-    return child;
-  }
-  
-  private BuyParameters crossover(BuyParameters mom, BuyParameters dad) {
-    BuyParameters child = new BuyParameters();
-    
-    child.setRsiCeiling(chooseRandom(mom.getRsiCeiling(), dad.getRsiCeiling()));
-    child.setTargetAmount(chooseRandom(mom.getTargetAmount(), dad.getTargetAmount()));
-    child.setPercentageOfLowerBollingerBand(chooseRandom(mom.getPercentageOfLowerBollingerBand(), dad.getPercentageOfLowerBollingerBand()));
-    
-    return child;
-  }
-  
-  private SellParameters crossover(SellParameters mom, SellParameters dad) {
-    SellParameters child = new SellParameters();
-    
-    child.setPercentageGain(chooseRandom(mom.getPercentageGain(), dad.getPercentageGain()));
-    child.setAmountAboveCostBasis(chooseRandom(mom.getAmountAboveCostBasis(), dad.getAmountAboveCostBasis()));
-    child.setTargetAmount(chooseRandom(mom.getTargetAmount(), dad.getTargetAmount()));
-    child.setRsiFloor(chooseRandom(mom.getRsiFloor(), dad.getRsiFloor()));
-    child.setPercentageOfUpperBollingerBand(chooseRandom(mom.getPercentageOfUpperBollingerBand(), dad.getPercentageOfUpperBollingerBand()));
-    
-    return child;
-  }
-  
-  private StopLossParameters crossover(StopLossParameters mom, StopLossParameters dad) {
-    StopLossParameters child = new StopLossParameters();
-    
-    child.setPercentageOfLoss(chooseRandom(mom.getPercentageOfLoss(), dad.getPercentageOfLoss()));
-    child.setAmountBelowCostBasis(chooseRandom(mom.getAmountBelowCostBasis(), dad.getAmountBelowCostBasis()));
-    child.setTargetAssetPrice(chooseRandom(mom.getTargetAssetPrice(), dad.getTargetAssetPrice()));
     
     return child;
   }

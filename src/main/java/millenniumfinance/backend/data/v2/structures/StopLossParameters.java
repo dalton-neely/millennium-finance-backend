@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import static millenniumfinance.backend.genetics.Randomizers.OFF_GENE;
 import static millenniumfinance.backend.genetics.Randomizers.activeRandomizer;
 import static millenniumfinance.backend.genetics.Randomizers.amountRandomizer;
+import static millenniumfinance.backend.genetics.Randomizers.chooseRandom;
 import static millenniumfinance.backend.genetics.Randomizers.percentageRandomizer;
 
 @Data
@@ -20,13 +21,23 @@ public class StopLossParameters {
   private Parameter<BigDecimal> targetAssetPrice;
   
   public static StopLossParameters randomizeStopLoss(Double maxAmountBelowCostBasis) {
-    StopLossParameters.StopLossParametersBuilder builder = StopLossParameters.builder();
+    StopLossParametersBuilder builder = builder();
     Parameter<BigDecimal> percentageOfLoss = new Parameter<>(percentageRandomizer(), activeRandomizer());
     Parameter<BigDecimal> amountBelowCostBasis = new Parameter<>(amountRandomizer(maxAmountBelowCostBasis), activeRandomizer());
     
     builder.percentageOfLoss(percentageOfLoss)
         .amountBelowCostBasis(amountBelowCostBasis)
         .targetAssetPrice(OFF_GENE);
+    
+    return builder.build();
+  }
+  
+  public static StopLossParameters crossover(StopLossParameters mother, StopLossParameters father) {
+    StopLossParametersBuilder builder = builder();
+    
+    builder.percentageOfLoss(chooseRandom(mother.getPercentageOfLoss(), father.getPercentageOfLoss()))
+        .amountBelowCostBasis(chooseRandom(mother.getAmountBelowCostBasis(), father.getAmountBelowCostBasis()))
+        .targetAssetPrice(chooseRandom(mother.getTargetAssetPrice(), father.getTargetAssetPrice()));
     
     return builder.build();
   }

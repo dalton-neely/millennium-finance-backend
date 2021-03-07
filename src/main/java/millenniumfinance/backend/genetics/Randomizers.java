@@ -33,4 +33,12 @@ public final class Randomizers {
   public static BigDecimal amountRandomizer(Double maxAmount) {
     return fromNumber(random.nextDouble() * maxAmount);
   }
+  
+  public static <T> T chooseRandom(T firstChoice, T secondChoice) {
+    if (random.nextBoolean()) {
+      return firstChoice;
+    } else {
+      return secondChoice;
+    }
+  }
 }
