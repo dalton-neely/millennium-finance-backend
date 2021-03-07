@@ -9,11 +9,10 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import millenniumfinance.backend.data.v1.structures.DataTable;
-import millenniumfinance.backend.data.v2.structures.BotSimulationInput;
 import millenniumfinance.backend.data.v2.structures.GeneticAlgorithmInput;
 import millenniumfinance.backend.services.SimulationBot;
 import millenniumfinance.backend.utilities.BigDecimalHelpers;
-import static millenniumfinance.backend.data.v2.structures.MarketParameters.crossoverMarket;
+import static millenniumfinance.backend.genetics.Phenotype.crossoverPhenotype;
 import static millenniumfinance.backend.utilities.BigDecimalHelpers.fromNumber;
 import static millenniumfinance.backend.utilities.BigDecimalHelpers.isEqualTo;
 
@@ -76,27 +75,10 @@ public class Population {
       System.out.println("crossing parent " + index + " with parent " + index + 1);
       Phenotype current = winners.get(index);
       Phenotype next = winners.get(index + 1);
-      children.add(crossover(current.getGenotype().getGenes(), next.getGenotype().getGenes()));
+      children.add(crossoverPhenotype(current, next));
     }
     
     return children;
-  }
-  
-  private Phenotype crossover(BotSimulationInput mother, BotSimulationInput father) {
-    Phenotype child = new Phenotype();
-    Genotype newGenes = new Genotype();
-    BotSimulationInput input = new BotSimulationInput();
-    
-    input.setBullMarket(crossoverMarket(mother.getBullMarket(), father.getBullMarket()));
-    input.setBearMarket(crossoverMarket(mother.getBearMarket(), father.getBearMarket()));
-    input.setMarketIndicators(mother.getMarketIndicators());
-    input.setData(mother.getData());
-    input.setStarting(mother.getStarting());
-    
-    newGenes.setGenes(input);
-    child.setGenotype(newGenes);
-    
-    return child;
   }
   
   private BigDecimal max(BigDecimal a, BigDecimal b) {
