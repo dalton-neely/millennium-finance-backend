@@ -7,8 +7,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import millenniumfinance.backend.data.v1.structures.DataTable;
-import millenniumfinance.backend.data.v1.structures.GainLossReport;
-import millenniumfinance.backend.data.v2.structures.BotSimulationInput;
 import millenniumfinance.backend.data.v2.structures.GeneticAlgorithmInput;
 import millenniumfinance.backend.services.SimulationBot;
 import static millenniumfinance.backend.genetics.Genotype.randomizeGenotype;
@@ -21,11 +19,11 @@ import static millenniumfinance.backend.utilities.BigDecimalHelpers.subtract;
 @AllArgsConstructor
 @Builder
 public class Generation {
-  private List<Phenotype> phenotypes = new ArrayList<>();
-  private List<Phenotype> winners = new ArrayList<>();
+  private List<Phenotype> phenotypes;
+  private List<Phenotype> winners;
   private Integer populationSize;
-  private Integer winnerCircleSize = 20;
-  private Integer winnerIndex = 0;
+  private Integer winnerCircleSize;
+  private Integer winnerIndex;
   
   public static Generation randomizeGeneration(GeneticAlgorithmInput input) {
     GenerationBuilder builder = builder();
@@ -36,8 +34,10 @@ public class Generation {
     }
     
     builder.phenotypes(phenotypes)
+        .winners(new ArrayList<>())
         .populationSize(input.getPopulationSize())
-        .winnerCircleSize(input.getWinnerCircleSize());
+        .winnerCircleSize(input.getWinnerCircleSize())
+        .winnerIndex(0);
     
     return builder.build();
   }
@@ -45,16 +45,10 @@ public class Generation {
   public void runSimulation(DataTable dataTable, SimulationBot simulationBot) {
     for (int index = 0; index < populationSize; index++) {
       Phenotype current = phenotypes.get(index);
-      BotSimulationInput genes = current.getGenotype().getGenes();
-      GainLossReport report = simulationBot.runSimulation(dataTable, genes);
-      current.setReport(report);
+      current.setReport(simulationBot.runSimulation(dataTable, current.getGenotype().getGenes()));
     }
-  }
-  
-  public List<Phenotype> getWinners() {
     sortWinners();
     winners = phenotypes.subList(0, winnerCircleSize);
-    return winners;
   }
   
   public void sortWinners() {
@@ -76,6 +70,11 @@ public class Generation {
       List<Phenotype> children,
       GeneticAlgorithmInput input
   ) {
+    phenotypes = new ArrayList<>();
+    winners = new ArrayList<>();
+    winnerCircleSize = input.getWinnerCircleSize();
+    populationSize = input.getPopulationSize();
+    winnerIndex = 0;
     phenotypes.addAll(children);
     for (int index = 0; index < populationSize - children.size(); index++) {
       Phenotype current = new Phenotype();

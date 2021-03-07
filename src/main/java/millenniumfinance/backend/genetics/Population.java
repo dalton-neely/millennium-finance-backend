@@ -31,7 +31,7 @@ public class Population {
       Generation current = generations.get(index);
       current.runSimulation(dataTable, bot);
       List<Phenotype> winners = current.getWinners();
-      List<Phenotype> children = crossover(winners);
+      List<Phenotype> children = crossover(winners, input.getWinnerCircleSize());
       Generation nextGeneration = new Generation();
       nextGeneration.setPopulationSize(input.getPopulationSize());
       nextGeneration.seedNew(children, input);
@@ -41,15 +41,13 @@ public class Population {
     System.out.println(generations.get(generations.size() - 2).getWinners().get(0).getReport().toString());
   }
   
-  public List<Phenotype> crossover(List<Phenotype> winners) {
+  public List<Phenotype> crossover(List<Phenotype> winners, Integer winnerCircleSize) {
     List<Phenotype> children = new ArrayList<>();
-    int size = 20;
-    for (int index = 0; index < size; index += 2) {
+    for (int index = 0; index < winnerCircleSize; index += 2) {
       Phenotype current = winners.get(index);
       Phenotype next = winners.get(index + 1);
       children.add(crossoverPhenotype(current, next));
     }
-    
     return children;
   }
 }
