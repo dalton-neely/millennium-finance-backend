@@ -22,8 +22,9 @@ public class BuyParameters {
   
   public static BuyParameters randomizeBuy(GeneticAlgorithmInput input) {
     RsiWindow rsiWindow = input.getRandomizeContext().getBuyRsi();
+    PercentageWindow percentageWindow = input.getRandomizeContext().getBuyBollingerPercentage();
     BuyParametersBuilder builder = builder();
-    Parameter<BigDecimal> percentageOfLowerBollingerBand = new Parameter<>(percentageRandomizer(), activeRandomizer());
+    Parameter<BigDecimal> percentageOfLowerBollingerBand = new Parameter<>(percentageRandomizer(percentageWindow.getMin(), percentageWindow.getMax()), activeRandomizer());
     Parameter<BigDecimal> rsiCeiling = new Parameter<>(rsiRandomizer(rsiWindow.getMin(), rsiWindow.getMax()), activeRandomizer());
     
     builder.percentageOfLowerBollingerBand(percentageOfLowerBollingerBand)

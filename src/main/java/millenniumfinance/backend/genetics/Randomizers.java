@@ -14,13 +14,15 @@ public final class Randomizers {
     return random.nextInt(min) + (max - min);
   }
   
-  public static BigDecimal stdRandomizer(Integer max) {
-    return fromNumber(random.nextDouble() * (random.nextInt(max - 1) + 1));
+  public static BigDecimal stdRandomizer(Double min, Double max) {
+    double delta = max - min;
+    return addition(fromNumber(min), fromNumber(random.nextDouble() * delta));
   }
   
-  public static BigDecimal percentageRandomizer() {
+  public static BigDecimal percentageRandomizer(Double min, Double max) {
+    double delta = max - min;
     // Values from 50% to 150%
-    return fromNumber(random.nextDouble() + 0.5);
+    return addition(fromNumber(min), fromNumber(random.nextDouble() * delta));
   }
   
   public static Boolean activeRandomizer() {
@@ -28,7 +30,7 @@ public final class Randomizers {
   }
   
   public static BigDecimal rsiRandomizer(Double minRsi, Double maxRsi) {
-    Double delta = maxRsi - minRsi;
+    double delta = maxRsi - minRsi;
     return addition(fromNumber(minRsi), fromNumber(random.nextDouble() * delta));
   }
   

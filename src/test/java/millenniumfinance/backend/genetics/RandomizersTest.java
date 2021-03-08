@@ -18,10 +18,12 @@ class RandomizersTest {
   
   @RepeatedTest(value = 1000)
   void testPercentageRandomizer() {
-    BigDecimal actual = percentageRandomizer();
+    double min = 0.80;
+    double max = 1.20;
+    BigDecimal actual = percentageRandomizer(min, max);
     
-    assertTrue(isLessThan(actual, fromNumber(1.51)));
-    assertTrue(isGreaterThan(actual, fromNumber(0.49)));
+    assertTrue(isLessThan(actual, fromNumber(max)));
+    assertTrue(isGreaterThan(actual, fromNumber(min)));
   }
   
   @RepeatedTest(value = 1000)
@@ -55,10 +57,11 @@ class RandomizersTest {
   
   @RepeatedTest(value = 1000)
   void testStdRandomizer() {
-    Integer max = 5;
-    BigDecimal actual = stdRandomizer(max);
+    double min = 1.0;
+    double max = 2.5;
+    BigDecimal actual = stdRandomizer(min, max);
     
     assertTrue(isLessThanOrEqualTo(actual, fromNumber(max)));
-    assertTrue(isGreaterThanOrEqualTo(actual, fromNumber(0)));
+    assertTrue(isGreaterThanOrEqualTo(actual, fromNumber(min)));
   }
 }

@@ -26,11 +26,13 @@ public class SellParameters {
   public static SellParameters randomizeSell(GeneticAlgorithmInput input) {
     RandomizeContext context = input.getRandomizeContext();
     RsiWindow rsiWindow = context.getSellRsi();
+    PercentageWindow bollinger = context.getSellBollingerPercentage();
+    PercentageWindow gain = context.getSellGainPercentage();
     SellParametersBuilder builder = builder();
     Parameter<BigDecimal> amountAboveCostBasis = new Parameter<>(amountRandomizer(context.getMaxAmountAboveCostBasis()), activeRandomizer());
-    Parameter<BigDecimal> percentageGain = new Parameter<>(percentageRandomizer(), activeRandomizer());
+    Parameter<BigDecimal> percentageGain = new Parameter<>(percentageRandomizer(gain.getMin(), gain.getMax()), activeRandomizer());
     Parameter<BigDecimal> rsiFloor = new Parameter<>(rsiRandomizer(rsiWindow.getMin(), rsiWindow.getMax()), activeRandomizer());
-    Parameter<BigDecimal> percentageOfUpperBollingerBand = new Parameter<>(percentageRandomizer(), activeRandomizer());
+    Parameter<BigDecimal> percentageOfUpperBollingerBand = new Parameter<>(percentageRandomizer(bollinger.getMin(), bollinger.getMax()), activeRandomizer());
     
     builder.amountAboveCostBasis(amountAboveCostBasis)
         .percentageGain(percentageGain)

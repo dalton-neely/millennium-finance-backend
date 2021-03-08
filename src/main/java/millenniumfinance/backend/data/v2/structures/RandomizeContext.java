@@ -12,8 +12,10 @@ import lombok.NoArgsConstructor;
 public class RandomizeContext {
   private Double maxAmountAboveCostBasis;
   private Double maxAmountBelowCostBasis;
-  private Integer maxStdLowerBollingerBand;
-  private Integer minStdUpperBollingerBand;
+  private PercentageWindow buyBollingerPercentage;
+  private PercentageWindow sellBollingerPercentage;
+  private PercentageWindow sellGainPercentage;
+  private PercentageWindow stopLossPercentage;
   private Integer minPeriod;
   private Integer maxPeriod;
   private RsiWindow sellRsi;
