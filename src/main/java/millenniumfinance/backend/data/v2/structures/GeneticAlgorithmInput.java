@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 public class GeneticAlgorithmInput {
+  private boolean elitism;
   private Integer generationSize;
   private Integer populationSize;
   private Integer winnerCircleSize;

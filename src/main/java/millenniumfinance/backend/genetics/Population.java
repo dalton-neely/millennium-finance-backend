@@ -37,7 +37,7 @@ public class Population {
     for (int index = 1; index < generationSize; index++) {
       System.out.println("running generation: " + index);
       
-      generation = fromPreviousGenChildren(crossover(generation.getWinners(), input.getWinnerCircleSize()), input);
+      generation = fromPreviousGenChildren(crossover(generation.getWinners(), input.getWinnerCircleSize(), input.isElitism()), input);
       generation.runSimulation(dataTable, bot);
     }
     long endTime = System.nanoTime();
@@ -49,9 +49,14 @@ public class Population {
     System.out.println("Total Time Run: " + ((endTime - startTime) / 1_000_000_000) + " seconds");
   }
   
-  public List<Phenotype> crossover(List<Phenotype> winners, Integer winnerCircleSize) {
+  public List<Phenotype> crossover(List<Phenotype> winners, Integer winnerCircleSize, boolean elitism) {
     List<Phenotype> children = new ArrayList<>();
-    for (int index = 0; index < winnerCircleSize; index += 2) {
+    int endingIndex = winnerCircleSize;
+    if (elitism) {
+      children.add(winners.get(0));
+      endingIndex -= 2;
+    }
+    for (int index = 0; index < endingIndex; index += 2) {
       children.add(crossoverPhenotype(winners.get(index), winners.get(index + 1)));
     }
     return children;
