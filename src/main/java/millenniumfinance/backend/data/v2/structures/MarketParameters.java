@@ -16,12 +16,11 @@ public class MarketParameters {
   private TrendParameters downtrend;
   
   public static MarketParameters randomizeMarketParameters(
-      Double maxAmountAboveCostBasis,
-      Double maxAmountBelowCostBasis
+      GeneticAlgorithmInput input
   ) {
     return builder()
-        .uptrend(randomizeTrendParameters(maxAmountAboveCostBasis, maxAmountBelowCostBasis))
-        .downtrend(randomizeTrendParameters(maxAmountAboveCostBasis, maxAmountBelowCostBasis))
+        .uptrend(randomizeTrendParameters(input))
+        .downtrend(randomizeTrendParameters(input))
         .build();
   }
   

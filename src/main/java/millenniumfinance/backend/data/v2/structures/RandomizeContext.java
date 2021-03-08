@@ -16,4 +16,6 @@ public class RandomizeContext {
   private Integer minStdUpperBollingerBand;
   private Integer minPeriod;
   private Integer maxPeriod;
+  private RsiWindow sellRsi;
+  private RsiWindow buyRsi;
 }

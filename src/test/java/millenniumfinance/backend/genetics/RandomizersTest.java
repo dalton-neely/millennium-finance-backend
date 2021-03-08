@@ -26,10 +26,12 @@ class RandomizersTest {
   
   @RepeatedTest(value = 1000)
   void testRsiRandomizer() {
-    BigDecimal actual = rsiRandomizer();
+    Double minRsi = 0.00;
+    Double maxRsi = 30.00;
+    BigDecimal actual = rsiRandomizer(minRsi, maxRsi);
     
-    assertTrue(isLessThan(actual, fromNumber(100)));
-    assertTrue(isGreaterThan(actual, fromNumber(0)));
+    assertTrue(isLessThanOrEqualTo(actual, fromNumber(maxRsi)));
+    assertTrue(isGreaterThanOrEqualTo(actual, fromNumber(minRsi)));
   }
   
   @RepeatedTest(value = 1000)

@@ -21,13 +21,12 @@ public class TrendParameters {
   private StopLossParameters stopLoss;
   
   public static TrendParameters randomizeTrendParameters(
-      Double maxAmountAboveCostBasis,
-      Double maxAmountBelowCostBasis
+      GeneticAlgorithmInput input
   ) {
     return TrendParameters.builder()
-        .buy(randomizeBuy())
-        .sell(randomizeSell(maxAmountAboveCostBasis))
-        .stopLoss(randomizeStopLoss(maxAmountBelowCostBasis))
+        .buy(randomizeBuy(input))
+        .sell(randomizeSell(input))
+        .stopLoss(randomizeStopLoss(input))
         .build();
   }
   

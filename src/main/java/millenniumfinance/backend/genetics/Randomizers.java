@@ -3,6 +3,7 @@ package millenniumfinance.backend.genetics;
 import java.math.BigDecimal;
 import java.util.Random;
 import millenniumfinance.backend.data.v2.structures.Parameter;
+import static millenniumfinance.backend.utilities.BigDecimalHelpers.addition;
 import static millenniumfinance.backend.utilities.BigDecimalHelpers.fromNumber;
 
 public final class Randomizers {
@@ -26,8 +27,9 @@ public final class Randomizers {
     return random.nextBoolean();
   }
   
-  public static BigDecimal rsiRandomizer() {
-    return fromNumber(random.nextDouble() * 100);
+  public static BigDecimal rsiRandomizer(Double minRsi, Double maxRsi) {
+    Double delta = maxRsi - minRsi;
+    return addition(fromNumber(minRsi), fromNumber(random.nextDouble() * delta));
   }
   
   public static BigDecimal amountRandomizer(Double maxAmount) {

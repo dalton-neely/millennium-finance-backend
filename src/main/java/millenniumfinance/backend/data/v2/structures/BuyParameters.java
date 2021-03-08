@@ -20,10 +20,11 @@ public class BuyParameters {
   private Parameter<BigDecimal> percentageOfLowerBollingerBand;
   private Parameter<BigDecimal> targetAmount;
   
-  public static BuyParameters randomizeBuy() {
+  public static BuyParameters randomizeBuy(GeneticAlgorithmInput input) {
+    RsiWindow rsiWindow = input.getRandomizeContext().getBuyRsi();
     BuyParametersBuilder builder = builder();
     Parameter<BigDecimal> percentageOfLowerBollingerBand = new Parameter<>(percentageRandomizer(), activeRandomizer());
-    Parameter<BigDecimal> rsiCeiling = new Parameter<>(rsiRandomizer(), activeRandomizer());
+    Parameter<BigDecimal> rsiCeiling = new Parameter<>(rsiRandomizer(rsiWindow.getMin(), rsiWindow.getMax()), activeRandomizer());
     
     builder.percentageOfLowerBollingerBand(percentageOfLowerBollingerBand)
         .rsiCeiling(rsiCeiling)

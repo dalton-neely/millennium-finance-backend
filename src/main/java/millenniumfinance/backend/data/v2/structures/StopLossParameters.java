@@ -20,10 +20,11 @@ public class StopLossParameters {
   private Parameter<BigDecimal> percentageOfLoss;
   private Parameter<BigDecimal> targetAssetPrice;
   
-  public static StopLossParameters randomizeStopLoss(Double maxAmountBelowCostBasis) {
+  public static StopLossParameters randomizeStopLoss(GeneticAlgorithmInput input) {
+    RandomizeContext context = input.getRandomizeContext();
     StopLossParametersBuilder builder = builder();
     Parameter<BigDecimal> percentageOfLoss = new Parameter<>(percentageRandomizer(), activeRandomizer());
-    Parameter<BigDecimal> amountBelowCostBasis = new Parameter<>(amountRandomizer(maxAmountBelowCostBasis), activeRandomizer());
+    Parameter<BigDecimal> amountBelowCostBasis = new Parameter<>(amountRandomizer(context.getMaxAmountBelowCostBasis()), activeRandomizer());
     
     builder.percentageOfLoss(percentageOfLoss)
         .amountBelowCostBasis(amountBelowCostBasis)

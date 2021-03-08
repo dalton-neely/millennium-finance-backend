@@ -23,11 +23,13 @@ public class SellParameters {
   private Parameter<BigDecimal> amountAboveCostBasis;
   private Parameter<BigDecimal> targetAmount;
   
-  public static SellParameters randomizeSell(Double maxAmountAboveCostBasis) {
+  public static SellParameters randomizeSell(GeneticAlgorithmInput input) {
+    RandomizeContext context = input.getRandomizeContext();
+    RsiWindow rsiWindow = context.getSellRsi();
     SellParametersBuilder builder = builder();
-    Parameter<BigDecimal> amountAboveCostBasis = new Parameter<>(amountRandomizer(maxAmountAboveCostBasis), activeRandomizer());
+    Parameter<BigDecimal> amountAboveCostBasis = new Parameter<>(amountRandomizer(context.getMaxAmountAboveCostBasis()), activeRandomizer());
     Parameter<BigDecimal> percentageGain = new Parameter<>(percentageRandomizer(), activeRandomizer());
-    Parameter<BigDecimal> rsiFloor = new Parameter<>(rsiRandomizer(), activeRandomizer());
+    Parameter<BigDecimal> rsiFloor = new Parameter<>(rsiRandomizer(rsiWindow.getMin(), rsiWindow.getMax()), activeRandomizer());
     Parameter<BigDecimal> percentageOfUpperBollingerBand = new Parameter<>(percentageRandomizer(), activeRandomizer());
     
     builder.amountAboveCostBasis(amountAboveCostBasis)
