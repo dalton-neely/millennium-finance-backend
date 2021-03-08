@@ -45,4 +45,12 @@ public final class Randomizers {
       return secondChoice;
     }
   }
+  
+  public static boolean toMutate(double mutatePercentage) {
+    return random.nextDouble() <= mutatePercentage;
+  }
+  
+  public static int randomInt(int maxInt) {
+    return random.nextInt(maxInt);
+  }
 }

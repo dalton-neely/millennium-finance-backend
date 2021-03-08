@@ -34,10 +34,12 @@ public class Population {
     long startTime = System.nanoTime();
     generation = randomizeGeneration(input);
     generation.runSimulation(dataTable, bot);
+    System.out.println("running generation: " + 1);
     for (int index = 1; index < generationSize; index++) {
-      System.out.println("running generation: " + index);
+      int displayIndex = index + 1;
+      System.out.println("running generation: " + displayIndex);
       
-      generation = fromPreviousGenChildren(crossover(generation.getWinners(), input.getWinnerCircleSize(), input.isElitism()), input);
+      generation = fromPreviousGenChildren(crossover(generation.getWinners(), input), input);
       generation.runSimulation(dataTable, bot);
     }
     long endTime = System.nanoTime();
@@ -49,14 +51,16 @@ public class Population {
     System.out.println("Total Time Run: " + ((endTime - startTime) / 1_000_000_000) + " seconds");
   }
   
-  public List<Phenotype> crossover(List<Phenotype> winners, Integer winnerCircleSize, boolean elitism) {
+  public List<Phenotype> crossover(List<Phenotype> winners, GeneticAlgorithmInput input) {
     List<Phenotype> children = new ArrayList<>();
-    int endingIndex = winnerCircleSize;
-    if (elitism) {
+    int endingIndex = input.getWinnerCircleSize();
+    if (input.isElitism()) {
       children.add(winners.get(0));
       endingIndex -= 2;
     }
     for (int index = 0; index < endingIndex; index += 2) {
+      Phenotype child = crossoverPhenotype(winners.get(index), winners.get(index + 1));
+      child.getGenotype().mutateChance(input);
       children.add(crossoverPhenotype(winners.get(index), winners.get(index + 1)));
     }
     return children;

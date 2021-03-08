@@ -5,6 +5,7 @@ import org.junit.jupiter.api.RepeatedTest;
 import static millenniumfinance.backend.genetics.Randomizers.amountRandomizer;
 import static millenniumfinance.backend.genetics.Randomizers.percentageRandomizer;
 import static millenniumfinance.backend.genetics.Randomizers.periodRandomizer;
+import static millenniumfinance.backend.genetics.Randomizers.randomInt;
 import static millenniumfinance.backend.genetics.Randomizers.rsiRandomizer;
 import static millenniumfinance.backend.genetics.Randomizers.stdRandomizer;
 import static millenniumfinance.backend.utilities.BigDecimalHelpers.fromNumber;
@@ -64,4 +65,18 @@ class RandomizersTest {
     assertTrue(isLessThanOrEqualTo(actual, fromNumber(max)));
     assertTrue(isGreaterThanOrEqualTo(actual, fromNumber(min)));
   }
+  
+  @RepeatedTest(value = 1000)
+  void testRandomInt() {
+    int maxInt = 5;
+    int actual = randomInt(maxInt);
+    
+    assertTrue(actual <= maxInt);
+    assertTrue(actual >= 0);
+  }
+
+//  @RepeatedTest(value = 100)
+//  void testMutate() {
+//    System.out.println(toMutate(.10));
+//  }
 }
