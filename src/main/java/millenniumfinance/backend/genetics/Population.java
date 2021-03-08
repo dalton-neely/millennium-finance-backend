@@ -24,7 +24,7 @@ import static millenniumfinance.backend.utilities.BigDecimalHelpers.subtract;
 @AllArgsConstructor
 @Builder
 public class Population {
-  private List<Generation> generations;
+  private Generation generation;
   private Integer generationSize;
   private Integer generationsRun;
   private DataTable dataTable;
@@ -32,16 +32,13 @@ public class Population {
   
   public void runAllGenerations(GeneticAlgorithmInput input) {
     long startTime = System.nanoTime();
-    generations = new ArrayList<>();
-    generations.add(randomizeGeneration(input));
-    for (int index = 0; index < generationSize; index++) {
-      int displayIndex = index + 1;
-      System.out.println("running generation: " + displayIndex);
+    generation = randomizeGeneration(input);
+    generation.runSimulation(dataTable, bot);
+    for (int index = 1; index < generationSize; index++) {
+      System.out.println("running generation: " + index);
       
-      Generation current = generations.get(index);
-      current.runSimulation(dataTable, bot);
-      
-      generations.add(fromPreviousGenChildren(crossover(current.getWinners(), input.getWinnerCircleSize()), input));
+      generation = fromPreviousGenChildren(crossover(generation.getWinners(), input.getWinnerCircleSize()), input);
+      generation.runSimulation(dataTable, bot);
     }
     long endTime = System.nanoTime();
     System.out.println("finished");
@@ -61,6 +58,6 @@ public class Population {
   }
   
   public Phenotype getTheWinner() {
-    return generations.get(generationSize - 1).getWinners().get(0);
+    return generation.getWinners().get(0);
   }
 }
