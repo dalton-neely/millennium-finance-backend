@@ -19,6 +19,10 @@ public class Phenotype {
   private Genotype genotype;
   private GainLossReport report;
   
+  public static Phenotype fromSeed(GeneticAlgorithmInput input) {
+    return new Phenotype(Genotype.fromSeed(input), new GainLossReport());
+  }
+  
   public static Phenotype randomizePhenotype(GeneticAlgorithmInput input) {
     return new Phenotype(randomizeGenotype(input), new GainLossReport());
   }

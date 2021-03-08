@@ -27,13 +27,17 @@ public class Generation {
   private Integer populationSize;
   private Integer winnerCircleSize;
   
-  public static Generation randomizeGeneration(GeneticAlgorithmInput input) {
+  public static Generation fromSeed(GeneticAlgorithmInput input) {
     Generation generation = new Generation();
     generation.init(input);
     
     List<Phenotype> phenotypes = new ArrayList<>();
     for (int index = 0; index < input.getPopulationSize(); index++) {
-      phenotypes.add(randomizePhenotype(input));
+      if (index == 0) {
+        phenotypes.add(Phenotype.fromSeed(input));
+      } else {
+        phenotypes.add(randomizePhenotype(input));
+      }
     }
     generation.setPhenotypes(phenotypes);
     
@@ -45,6 +49,19 @@ public class Generation {
     winners = new ArrayList<>();
     populationSize = input.getPopulationSize();
     winnerCircleSize = input.getWinnerCircleSize();
+  }
+  
+  public static Generation randomizeGeneration(GeneticAlgorithmInput input) {
+    Generation generation = new Generation();
+    generation.init(input);
+    
+    List<Phenotype> phenotypes = new ArrayList<>();
+    for (int index = 0; index < input.getPopulationSize(); index++) {
+      phenotypes.add(randomizePhenotype(input));
+    }
+    generation.setPhenotypes(phenotypes);
+    
+    return generation;
   }
   
   public static Generation fromPreviousGenChildren(

@@ -21,6 +21,10 @@ import static millenniumfinance.backend.utilities.BigDecimalHelpers.fromNumber;
 public class Genotype {
   private BotSimulationInput genes;
   
+  public static Genotype fromSeed(GeneticAlgorithmInput input) {
+    return new Genotype(input.getSeed());
+  }
+  
   public static Genotype randomizeGenotype(GeneticAlgorithmInput input) {
     BotSimulationInputBuilder builder = BotSimulationInput.builder();
     

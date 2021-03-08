@@ -18,4 +18,6 @@ public class GeneticAlgorithmInput {
   private Double startingBalance;
   private RandomizeContext randomizeContext;
   private DataInput dataFetchParameters;
+  private boolean seedAlgorithm;
+  private BotSimulationInput seed;
 }

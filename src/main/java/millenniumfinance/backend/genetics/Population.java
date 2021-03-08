@@ -12,6 +12,7 @@ import millenniumfinance.backend.data.v1.structures.GainLossReport;
 import millenniumfinance.backend.data.v2.structures.GeneticAlgorithmInput;
 import millenniumfinance.backend.services.SimulationBot;
 import static millenniumfinance.backend.genetics.Generation.fromPreviousGenChildren;
+import static millenniumfinance.backend.genetics.Generation.fromSeed;
 import static millenniumfinance.backend.genetics.Generation.randomizeGeneration;
 import static millenniumfinance.backend.genetics.Phenotype.crossoverPhenotype;
 import static millenniumfinance.backend.utilities.BigDecimalHelpers.formatTwoPlaces;
@@ -32,7 +33,11 @@ public class Population {
   
   public void runAllGenerations(GeneticAlgorithmInput input) {
     long startTime = System.nanoTime();
-    generation = randomizeGeneration(input);
+    if (input.isSeedAlgorithm()) {
+      generation = fromSeed(input);
+    } else {
+      generation = randomizeGeneration(input);
+    }
     generation.runSimulation(dataTable, bot);
     System.out.println("running generation: " + 1);
     for (int index = 1; index < generationSize; index++) {
