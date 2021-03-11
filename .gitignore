@@ -36,4 +36,4 @@ out/
 .vscode/
 
 logs/
-src/main/resources/application-local-keys.yml
+/src/main/resources/application-local-keys.yml
