@@ -19,7 +19,6 @@ import org.springframework.web.client.RestTemplate;
 import static java.util.Objects.requireNonNull;
 import static millenniumfinance.backend.classes.binance.enumerations.Side.BUY;
 import static millenniumfinance.backend.classes.binance.enumerations.Symbol.BTCUSD;
-import static millenniumfinance.backend.classes.binance.enumerations.Symbol.MATICUSD;
 import static millenniumfinance.backend.classes.binance.enumerations.Type.MARKET;
 import static org.springframework.http.HttpHeaders.CONTENT_TYPE;
 import static org.springframework.http.HttpMethod.POST;
@@ -51,7 +50,7 @@ public final class BinanceClient {
     this.binanceApiRestClient = binanceApiRestClient;
   }
   
-  public boolean canConnectToServer() {
+  public boolean pingServer() {
     ResponseEntity<String> response = restTemplate.getForEntity(VERSION_3_BASE + "ping", String.class);
     return HttpStatus.OK.value() == response.getStatusCodeValue();
   }
@@ -60,8 +59,8 @@ public final class BinanceClient {
     return restTemplate.getForEntity(VERSION_3_BASE + "exchangeInfo", ExchangeInfoResponse.class).getBody();
   }
   
-  public String testOrder2() {
-    return constructBinanceApiRequestPost("order/test", orderBuilder(BTCUSD, BUY, MARKET, "1"));
+  public String postOrderTest() {
+    return constructBinanceApiRequestPost("order/test", orderFactory(BTCUSD, BUY, MARKET, "1"));
   }
   
   private String constructBinanceApiRequestPost(String path, String formData) {
@@ -83,7 +82,7 @@ public final class BinanceClient {
     return restTemplate.exchange(url, POST, entity, String.class).getBody();
   }
   
-  private String orderBuilder(Symbol symbol, Side side, Type type, String quantity) {
+  private String orderFactory(Symbol symbol, Side side, Type type, String quantity) {
     return "symbol=" + symbol +
         "&side=" + side +
         "&quantity=" + quantity +
@@ -97,8 +96,8 @@ public final class BinanceClient {
         .getServerTime();
   }
   
-  public String testMaticUsdOrder() {
-    return constructBinanceApiRequestPost("order", orderBuilder(MATICUSD, BUY, MARKET, "35"));
+  public String postOrder(Symbol symbol, Side side, Type type, String quantity) {
+    return constructBinanceApiRequestPost("order", orderFactory(symbol, side, type, quantity));
   }
   
   public String getCandlestickData(CalculateDataInput input) {
