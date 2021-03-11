@@ -9,11 +9,7 @@ version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '11'
 
 repositories {
-    mavenLocal()
     mavenCentral()
-    maven {
-        url "https://jitpack.io"
-    }
 }
 
 dependencies {
@@ -27,8 +23,6 @@ dependencies {
 
     testCompileOnly 'org.projectlombok:lombok:1.18.16'
     testAnnotationProcessor 'org.projectlombok:lombok:1.18.16'
-//	implementation 'org.springframework.boot:spring-boot-devtools'
-    implementation 'com.binance.api:binance-api-client:1.0.0'
 }
 
 test {
