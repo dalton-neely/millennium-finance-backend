@@ -16,6 +16,7 @@ import org.springframework.web.client.RestTemplate;
 import static java.util.Objects.requireNonNull;
 import static millenniumfinance.backend.classes.binance.enumerations.Side.BUY;
 import static millenniumfinance.backend.classes.binance.enumerations.Symbol.BTCUSD;
+import static millenniumfinance.backend.classes.binance.enumerations.Symbol.MATICUSD;
 import static millenniumfinance.backend.classes.binance.enumerations.Type.MARKET;
 import static org.springframework.http.HttpHeaders.CONTENT_TYPE;
 import static org.springframework.http.HttpMethod.POST;
@@ -81,6 +82,10 @@ public final class BinanceClient {
         .getForEntity(BINANCE_API_BASE_URL + FORWARD_SLASH + BINANCE_API_VERSION + FORWARD_SLASH + "time", ServerTime.class)
         .getBody())
         .getServerTime();
+  }
+  
+  public String testMaticUsdOrder() {
+    return constructBinanceApiRequestPost("order", orderBuilder(MATICUSD, BUY, MARKET, "35"));
   }
   
   public String getCandlestickData(CalculateDataInput input) {

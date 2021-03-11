@@ -37,3 +37,4 @@ out/
 
 logs/
 /src/main/resources/application-local-keys.yml
+/notes/
