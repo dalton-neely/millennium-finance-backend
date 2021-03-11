@@ -1,9 +1,6 @@
 package millenniumfinance.backend;
 
-import com.binance.api.client.BinanceApiClientFactory;
-import com.binance.api.client.BinanceApiRestClient;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import millenniumfinance.backend.configuration.ApiKeysConfiguration;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
@@ -18,13 +15,6 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 public class BackendApplication {
   public static void main(String[] args) {
     SpringApplication.run(BackendApplication.class, args);
-  }
-  
-  @Bean
-  public BinanceApiRestClient binanceApiRestClient(ApiKeysConfiguration apiKeysConfiguration) {
-    BinanceApiClientFactory binanceApiClientFactory = BinanceApiClientFactory
-        .newInstance(apiKeysConfiguration.getApiKey(), apiKeysConfiguration.getSecretKey());
-    return binanceApiClientFactory.newRestClient();
   }
   
   @Bean

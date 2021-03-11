@@ -1,11 +1,11 @@
 package millenniumfinance.backend.clients;
 
-import com.binance.api.client.BinanceApiRestClient;
 import millenniumfinance.backend.classes.binance.enumerations.Side;
 import millenniumfinance.backend.classes.binance.enumerations.Symbol;
 import millenniumfinance.backend.classes.binance.enumerations.Type;
 import millenniumfinance.backend.classes.binance.responses.ExchangeInfoResponse;
 import millenniumfinance.backend.classes.binance.responses.ServerTime;
+import millenniumfinance.backend.classes.binance.responses.orders.OrderAcknowledgementResponse;
 import millenniumfinance.backend.configuration.ApiKeysConfiguration;
 import millenniumfinance.backend.data.v1.structures.CalculateDataInput;
 import millenniumfinance.backend.data.v2.structures.DataInput;
@@ -37,17 +37,14 @@ public final class BinanceClient {
   public static final String APPLICATION_X_WWW_FORM_URLENCODED = "application/x-www-form-urlencoded";
   private final RestTemplate restTemplate;
   private final ApiKeysConfiguration apiKeysConfiguration;
-  private final BinanceApiRestClient binanceApiRestClient;
   
   
   public BinanceClient(
       RestTemplate restTemplate,
-      ApiKeysConfiguration apiKeysConfiguration,
-      BinanceApiRestClient binanceApiRestClient
+      ApiKeysConfiguration apiKeysConfiguration
   ) {
     this.restTemplate = restTemplate;
     this.apiKeysConfiguration = apiKeysConfiguration;
-    this.binanceApiRestClient = binanceApiRestClient;
   }
   
   public boolean pingServer() {
@@ -59,11 +56,11 @@ public final class BinanceClient {
     return restTemplate.getForEntity(VERSION_3_BASE + "exchangeInfo", ExchangeInfoResponse.class).getBody();
   }
   
-  public String postOrderTest() {
+  public OrderAcknowledgementResponse postOrderTest() {
     return constructBinanceApiRequestPost("order/test", orderFactory(BTCUSD, BUY, MARKET, "1"));
   }
   
-  private String constructBinanceApiRequestPost(String path, String formData) {
+  private OrderAcknowledgementResponse constructBinanceApiRequestPost(String path, String formData) {
     String timestamp = getServerTime();
     StringBuilder modifiedBody = new StringBuilder(formData);
     modifiedBody.append("&timestamp=")
@@ -79,7 +76,7 @@ public final class BinanceClient {
         BINANCE_API_VERSION +
         FORWARD_SLASH +
         path;
-    return restTemplate.exchange(url, POST, entity, String.class).getBody();
+    return restTemplate.exchange(url, POST, entity, OrderAcknowledgementResponse.class).getBody();
   }
   
   private String orderFactory(Symbol symbol, Side side, Type type, String quantity) {
@@ -96,7 +93,7 @@ public final class BinanceClient {
         .getServerTime();
   }
   
-  public String postOrder(Symbol symbol, Side side, Type type, String quantity) {
+  public OrderAcknowledgementResponse postOrder(Symbol symbol, Side side, Type type, String quantity) {
     return constructBinanceApiRequestPost("order", orderFactory(symbol, side, type, quantity));
   }
   
