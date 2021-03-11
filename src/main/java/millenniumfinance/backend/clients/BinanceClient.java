@@ -4,6 +4,7 @@ import com.binance.api.client.BinanceApiRestClient;
 import millenniumfinance.backend.classes.binance.enumerations.Side;
 import millenniumfinance.backend.classes.binance.enumerations.Symbol;
 import millenniumfinance.backend.classes.binance.enumerations.Type;
+import millenniumfinance.backend.classes.binance.responses.ExchangeInfoResponse;
 import millenniumfinance.backend.classes.binance.responses.ServerTime;
 import millenniumfinance.backend.configuration.ApiKeysConfiguration;
 import millenniumfinance.backend.data.v1.structures.CalculateDataInput;
@@ -53,6 +54,10 @@ public final class BinanceClient {
   public boolean canConnectToServer() {
     ResponseEntity<String> response = restTemplate.getForEntity(VERSION_3_BASE + "ping", String.class);
     return HttpStatus.OK.value() == response.getStatusCodeValue();
+  }
+  
+  public ExchangeInfoResponse getExchangeInfo() {
+    return restTemplate.getForEntity(VERSION_3_BASE + "exchangeInfo", ExchangeInfoResponse.class).getBody();
   }
   
   public String testOrder2() {

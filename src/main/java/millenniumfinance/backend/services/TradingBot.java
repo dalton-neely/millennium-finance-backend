@@ -15,6 +15,7 @@ public class TradingBot {
   @Scheduled(fixedRate = 60_000)
   public void trade() {
 //    System.out.println(binanceClient.testMaticUsdOrder());
-    System.out.println(binanceClient.canConnectToServer());
+//    System.out.println(binanceClient.canConnectToServer());
+    System.out.println(binanceClient.getExchangeInfo());
   }
 }
