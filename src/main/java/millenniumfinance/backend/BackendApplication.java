@@ -22,8 +22,6 @@ public class BackendApplication {
   
   @Bean
   public BinanceApiRestClient binanceApiRestClient(ApiKeysConfiguration apiKeysConfiguration) {
-    System.out.println(apiKeysConfiguration.getApiKey());
-    System.out.println(apiKeysConfiguration.getSecretKey());
     BinanceApiClientFactory binanceApiClientFactory = BinanceApiClientFactory
         .newInstance(apiKeysConfiguration.getApiKey(), apiKeysConfiguration.getSecretKey());
     return binanceApiClientFactory.newRestClient();

@@ -11,6 +11,8 @@ import millenniumfinance.backend.data.v2.structures.DataInput;
 import millenniumfinance.backend.utilities.HMAC;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import static java.util.Objects.requireNonNull;
@@ -28,10 +30,11 @@ public final class BinanceClient {
   public static final String LIMIT = "limit";
   public static final String BINANCE_API_BASE_URL = "https://api.binance.us";
   public static final String BINANCE_API_VERSION = "api/v3";
+  public static final String FORWARD_SLASH = "/";
+  public static final String VERSION_3_BASE = BINANCE_API_BASE_URL + FORWARD_SLASH + BINANCE_API_VERSION + FORWARD_SLASH;
   public static final String K_LINES_PATH = "klines";
   public static final String API_KEY_HEADER = "X-MBX-APIKEY";
   public static final String APPLICATION_X_WWW_FORM_URLENCODED = "application/x-www-form-urlencoded";
-  public static final String FORWARD_SLASH = "/";
   private final RestTemplate restTemplate;
   private final ApiKeysConfiguration apiKeysConfiguration;
   private final BinanceApiRestClient binanceApiRestClient;
@@ -45,6 +48,11 @@ public final class BinanceClient {
     this.restTemplate = restTemplate;
     this.apiKeysConfiguration = apiKeysConfiguration;
     this.binanceApiRestClient = binanceApiRestClient;
+  }
+  
+  public boolean canConnectToServer() {
+    ResponseEntity<String> response = restTemplate.getForEntity(VERSION_3_BASE + "ping", String.class);
+    return HttpStatus.OK.value() == response.getStatusCodeValue();
   }
   
   public String testOrder2() {
