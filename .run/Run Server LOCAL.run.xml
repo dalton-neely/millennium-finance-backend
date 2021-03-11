@@ -5,7 +5,7 @@
     <extension name="coverage" sample_coverage="false" />
     <option name="SPRING_BOOT_MAIN_CLASS" value="millenniumfinance.backend.BackendApplication" />
     <option name="HIDE_BANNER" value="true" />
-    <option name="ACTIVE_PROFILES" value="local" />
+    <option name="ACTIVE_PROFILES" value="local, local-keys" />
     <option name="ALTERNATIVE_JRE_PATH" />
     <option name="UPDATE_ACTION_UPDATE_POLICY" value="UpdateClassesAndResources" />
     <option name="FRAME_DEACTIVATION_UPDATE_POLICY" value="UpdateClassesAndResources" />
